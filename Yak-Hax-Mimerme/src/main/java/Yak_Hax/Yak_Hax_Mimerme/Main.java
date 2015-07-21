@@ -83,7 +83,7 @@ public class Main {
 				System.out.print("Enter long (recomended -74.3561006): ");
 				parameters.add(input.next());
 			}
-			System.out.println(getMessages(parameters).toString());
+			System.out.println(getMessages(parameters).text());
 			break;
 
 		default:
