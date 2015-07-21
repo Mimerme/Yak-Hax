@@ -4,10 +4,13 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 
@@ -125,10 +128,22 @@ public class Main {
 			return Jsoup.connect(request)
 					.userAgent("Dalvik/2.1.0 (Linux; U; Android 5.0.2; SM-G925V Build/LRX22G) 2.8.1")
 					.ignoreContentType(true)
-					.timeout(30 * 1000)
+					.timeout(60 * 1000)
 					.get()
 					.body();
-		} catch (IOException e) {
+		} catch (HttpStatusException e) {
+			// TODO Auto-generated catch block
+			if(e.getStatusCode() == 401){
+				System.out.println("A 401 exception has occured, slow down your requests and"
+						+ " double check your query parameters");
+				return null;
+			}
+			else{
+				e.printStackTrace();
+			}
+			
+		} 
+		catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -146,7 +161,12 @@ public class Main {
 			String hash = Jsoup.connect(BASE_ENCODER_URL + URLEncoder.encode(message)).get()
 					.text();
 			return hash;
-		} catch (IOException e) {
+		} 
+		catch(SocketTimeoutException e){
+			System.out.println("There was a SocketTimeoutException, wait for the HASH server "
+					+ "to wake up");
+		}
+		catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
