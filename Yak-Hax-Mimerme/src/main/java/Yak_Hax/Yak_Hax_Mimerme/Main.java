@@ -28,7 +28,8 @@ public class Main {
 
 	public static void main(String[] args) throws IOException {
 		if(PRELOAD_CONFIG){
-			FileInputStream fs= new FileInputStream("values.txt");
+			System.out.println(System.getenv("UTILS_PATH") + "/values.txt");
+			FileInputStream fs= new FileInputStream(System.getenv("UTILS_PATH") + "\\values.txt");
 			BufferedReader br = new BufferedReader(new InputStreamReader(fs));
 			YikYakProfile.TOKEN = br.readLine();
 			YikYakProfile.USER_ID = br.readLine();
