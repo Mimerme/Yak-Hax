@@ -84,10 +84,12 @@ public class Main {
 				parameters.add(input.next());
 			}
 			System.out.println(getMessages(parameters).text());
+			System.exit(0);
 			break;
 
 		default:
 			System.out.println("Unrecognized parameter \'" + args[0] + "\'" );
+			System.exit(0);
 			break;
 
 		}
