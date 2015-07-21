@@ -18,7 +18,8 @@ public class Main {
 	static final String BASE_ENCODER_URL = "https://yakhax-encoder.herokuapp.com/?message=";
 
 	static final String YIKYAK_VERSION = "2.8.1";
-
+	static final String API_VERSION = "0.7a";
+	
 	static final boolean PRELOAD_CONFIG = true;
 
 	static Scanner input = new Scanner(System.in);
@@ -27,10 +28,10 @@ public class Main {
 	//endpoint
 
 	public static void main(String[] args) throws IOException {
-		System.out.println("Util API debugger");
+		System.out.println("Util API debugger " + API_VERSION);
 		if(PRELOAD_CONFIG){
-			System.out.println(System.getenv("UTILS_PATH") + "/values.txt");
-			FileInputStream fs= new FileInputStream(System.getenv("UTILS_PATH") + "\\values.txt");
+			System.out.println(System.getenv("UTILS_PATH") + "\\yhack\\values.txt");
+			FileInputStream fs= new FileInputStream(System.getenv("UTILS_PATH") + "\\yhack\\values.txt");
 			BufferedReader br = new BufferedReader(new InputStreamReader(fs));
 			YikYakProfile.TOKEN = br.readLine();
 			YikYakProfile.USER_ID = br.readLine();
@@ -47,6 +48,12 @@ public class Main {
 			System.exit(-1);
 		}
 
+		if(args.length == 0){
+			System.out.println("UtilConsole YikYak API Debugger");
+			System.out.println("Version " + Main.API_VERSION);
+
+		}
+		
 		switch(args[0]){
 		case "get-messages":
 			if(args.length == 2 && args[1].equals("default")){
