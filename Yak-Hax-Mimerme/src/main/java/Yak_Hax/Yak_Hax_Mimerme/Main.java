@@ -51,7 +51,7 @@ public class Main {
 		if(args.length == 0){
 			System.out.println("UtilConsole YikYak API Debugger");
 			System.out.println("Version " + Main.API_VERSION);
-
+			System.exit(0);
 		}
 		
 		switch(args[0]){
