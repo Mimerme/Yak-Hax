@@ -27,6 +27,7 @@ public class Main {
 	//endpoint
 
 	public static void main(String[] args) throws IOException {
+		System.out.println("Util API debugger");
 		if(PRELOAD_CONFIG){
 			System.out.println(System.getenv("UTILS_PATH") + "/values.txt");
 			FileInputStream fs= new FileInputStream(System.getenv("UTILS_PATH") + "\\values.txt");
