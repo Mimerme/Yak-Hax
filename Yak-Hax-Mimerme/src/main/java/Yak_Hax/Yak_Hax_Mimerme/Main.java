@@ -40,7 +40,7 @@ public class Main {
 
 		ArrayList<String> parameters = new ArrayList<String>();
 
-		if(YikYakProfile.TOKEN.equals("") || YikYakProfile.USER_ID.equals("")){
+		if(YikYakProfile.TOKEN == null || YikYakProfile.USER_ID == null){
 			System.out.println("[ERROR!] UserId / Token remains unset");
 			System.exit(-1);
 		}
