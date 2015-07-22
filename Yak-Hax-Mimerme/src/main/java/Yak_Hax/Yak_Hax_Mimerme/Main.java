@@ -17,7 +17,7 @@ import org.jsoup.nodes.Element;
 public class Main {
 
 	static final boolean PRELOAD_CONFIG = true;
-	static final String API_VERSION = "0.7a";
+	static final String API_VERSION = "0.9a";
 
 	static Scanner input = new Scanner(System.in);
 
