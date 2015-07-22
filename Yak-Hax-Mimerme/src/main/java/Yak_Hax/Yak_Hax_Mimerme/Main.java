@@ -65,19 +65,19 @@ public class Main {
 				System.out.println("Starting \'Get Comments\' request build");
 
 				//Parse accuracy
-				System.out.print("Enter accuracy (default 30.0): ");
+				System.out.println("Enter accuracy (default 30.0): ");
 				parameters.add(input.next());
 
 				//Parse basecamp
-				System.out.print("Enter basecamp (default 0): ");
+				System.out.println("Enter basecamp (default 0): ");
 				parameters.add(String.valueOf(input.nextInt()));
 
 				//Parse lat
-				System.out.print("Enter lat (recomended 40.5647994): ");
+				System.out.println("Enter lat (recomended 40.5647994): ");
 				parameters.add(input.next());
 
 				//Parse long
-				System.out.print("Enter long (recomended -74.3561006): ");
+				System.out.println("Enter long (recomended -74.3561006): ");
 				parameters.add(input.next());
 			}
 			System.out.println(YikYakAPI.getYaks(parameters).text());
@@ -105,23 +105,23 @@ public class Main {
 				System.out.println("Starting \'Get Comments\' request build");
 
 				//Parse accuracy
-				System.out.print("Enter accuracy (default 30.0): ");
+				System.out.println("Enter accuracy (default 30.0): ");
 				parameters.add(input.next());
 
 				//Parse basecamp
-				System.out.print("Enter basecamp (default 0): ");
+				System.out.println("Enter basecamp (default 0): ");
 				parameters.add(String.valueOf(input.nextInt()));
 
 				//Parse lat
-				System.out.print("Enter lat (recomended 40.5647994): ");
+				System.out.println("Enter lat (recomended 40.5647994): ");
 				parameters.add(input.next());
 
 				//Parse long
-				System.out.print("Enter long (recomended -74.3561006): ");
+				System.out.println("Enter long (recomended -74.3561006): ");
 				parameters.add(input.next());
 
 				//Parse messageID
-				System.out.print("Enter messageID (recomended R/556616c60b1cef81f019723059154): ");
+				System.out.println("Enter messageID (recomended R/556616c60b1cef81f019723059154): ");
 				parameters.add(input.next());
 			}
 			System.out.println(YikYakAPI.getYakComments(parameters).text());
