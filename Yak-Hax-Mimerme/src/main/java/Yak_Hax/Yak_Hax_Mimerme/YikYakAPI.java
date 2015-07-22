@@ -350,16 +350,42 @@ public class YikYakAPI {
 
 		return makeRequest(request);
 	}
+
+	public static Element postYak(ArrayList<String> parameters, ArrayList<String> postData) throws IOException{
+		String request, hashMessage;
+
+		request = BASE_URL;
+		hashMessage = "/api/";
+
+		hashMessage += "sendMessage?";
+
+		hashMessage += "token=" + parameters.get(0)
+				+ "&userID=" + parameters.get(1) + "&version=" + YikYakAPI.YIKYAK_VERSION;
+
+		String salt = getSalt();
+		String hashValue = getHash(hashMessage + salt);
+
+		request += "bc" + postData.get(0) + "bypassedThreatPopup" + postData.get(1)
+				+ "hash=" + hashValue + "&lat=" + postData.get(2) + "&long=" + postData.get(3)
+				+ "&message=" + convertMessage(postData.get(4)) + "&salt=" + salt + "&token=" + parameters.get(0)
+				+ "&userID=" + parameters.get(1) + "&version=" + YikYakAPI.YIKYAK_VERSION;
+
+		return makeRequest(request);
+	}
+	
+	//Convert the message to something for the request
+	private static String convertMessage(String message){
+		return message.replaceAll(" ", "+");
+	}
 	
 	//Makes the request to the YikYak API
-	//TODO: Randomize User-Agents
 	private static Element makeRequest(String request){
 		System.out.println(request);
 
 		System.out.println("Response value:");
 		try {
 			return Jsoup.connect(request)
-					.userAgent("Dalvik/2.1.0 (Linux; U; Android 5.0.2; SM-G925V Build/LRX22G) 2.8.1")
+					.userAgent(APIUtils.generateRandomUserAgent())
 					.ignoreContentType(true)
 					.timeout(60 * 1000)
 					.get()
@@ -370,6 +396,10 @@ public class YikYakAPI {
 				System.out.println("A 401 exception has occured, slow down your requests and"
 						+ " double check your query parameters");
 				return null;
+			}
+			else if(e.getStatusCode() == 500){
+				System.out.println("A 500 exception has occured, there may have been a problem with the User Agent"
+						+ " post this issue on GitHub");
 			}
 			else{
 				e.printStackTrace();
@@ -389,7 +419,7 @@ public class YikYakAPI {
 		System.out.println("Response value:");
 		try {
 			return Jsoup.connect(request)
-					.userAgent("Dalvik/2.1.0 (Linux; U; Android 5.0.2; SM-G925V Build/LRX22G) 2.8.1")
+					.userAgent(APIUtils.generateRandomUserAgent())
 					.ignoreContentType(true)
 					.timeout(60 * 1000)
 					.post()
@@ -400,6 +430,10 @@ public class YikYakAPI {
 				System.out.println("A 401 exception has occured, slow down your requests and"
 						+ " double check your query parameters");
 				return null;
+			}
+			else if(e.getStatusCode() == 500){
+				System.out.println("A 500 exception has occured, there may have been a problem with the User Agent"
+						+ " post this issue on GitHub");
 			}
 			else{
 				e.printStackTrace();

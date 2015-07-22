@@ -98,6 +98,11 @@ public class Main {
 			System.out.println(YikYakAPI.getAreaHot(parameters).text());
 			System.exit(0);
 			break;
+		case "gen-useragent":
+			System.out.println("Generating random User Agent");
+			System.out.println(APIUtils.generateRandomUserAgent());
+			System.exit(0);
+			break;
 		case "get-comments":
 			if(args.length == 2 && args[1].equals("default"))
 				System.out.println("Running \'Get Message\' default build");
