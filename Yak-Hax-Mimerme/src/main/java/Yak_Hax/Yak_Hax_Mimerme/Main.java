@@ -51,17 +51,16 @@ public class Main {
 			System.exit(0);
 		}
 
+		parameters.add("30.0");
+		parameters.add("0");
+		parameters.add("40.5647994");
+		parameters.add("-74.3561006");
+		parameters.add("R/556616c60b1cef81f019723059154");
+
 		switch(args[0]){
 		case "get-messages":
-			if(args.length == 2 && args[1].equals("default")){
-				System.out.println("Running \'Get Comments\' default build");
-				parameters.add("30.0");
-				parameters.add("0");
-				parameters.add("40.5647994");
-				parameters.add("-74.3561006");
-				parameters.add("R/556616c60b1cef81f019723059154");
-			}
-
+			if(args.length == 2 && args[1].equals("default"))
+				System.out.println("Running \'Get Messages\' default build");
 			else{
 				System.out.println("Starting \'Get Comments\' request build");
 
@@ -80,25 +79,30 @@ public class Main {
 				//Parse long
 				System.out.print("Enter long (recomended -74.3561006): ");
 				parameters.add(input.next());
-				
-				//Parse messageID
-				System.out.print("Enter messageID (recomended R/556616c60b1cef81f019723059154): ");
-				parameters.add(input.next());
 			}
 			System.out.println(YikYakAPI.getYaks(parameters).text());
 			System.exit(0);
 			break;
+		case "get-mytops":
+			System.out.println("Running \'Get MyTops\' default build");
+			System.out.println(YikYakAPI.getMyTops(parameters).text());
+			System.exit(0);
+			break;
+		case "get-areatop":
+			System.out.println("Running \'Get AreaTop\' default build");
+			System.out.println(YikYakAPI.getAreaTop(parameters).text());
+			System.exit(0);
+			break;
+		case "get-areahot":
+			System.out.println("Running \'Get AreaHot\' default build");
+			System.out.println(YikYakAPI.getAreaHot(parameters).text());
+			System.exit(0);
+			break;
 		case "get-comments":
-			if(args.length == 2 && args[1].equals("default")){
+			if(args.length == 2 && args[1].equals("default"))
 				System.out.println("Running \'Get Message\' default build");
-				parameters.add("30.0");
-				parameters.add("0");
-				parameters.add("40.5647994");
-				parameters.add("-74.3561006");
-			}
-
 			else{
-				System.out.println("Starting \'Get Message\' request build");
+				System.out.println("Starting \'Get Comments\' request build");
 
 				//Parse accuracy
 				System.out.print("Enter accuracy (default 30.0): ");
@@ -115,8 +119,12 @@ public class Main {
 				//Parse long
 				System.out.print("Enter long (recomended -74.3561006): ");
 				parameters.add(input.next());
+
+				//Parse messageID
+				System.out.print("Enter messageID (recomended R/556616c60b1cef81f019723059154): ");
+				parameters.add(input.next());
 			}
-			System.out.println(YikYakAPI.getYaks(parameters).text());
+			System.out.println(YikYakAPI.getYakComments(parameters).text());
 			System.exit(0);
 			break;
 
