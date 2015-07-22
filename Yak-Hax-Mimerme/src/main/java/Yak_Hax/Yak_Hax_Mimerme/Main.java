@@ -15,7 +15,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 
 public class Main {
-	
+
 	static final boolean PRELOAD_CONFIG = true;
 	static final String API_VERSION = "0.7a";
 
@@ -50,9 +50,45 @@ public class Main {
 			System.out.println("Version " + Main.API_VERSION);
 			System.exit(0);
 		}
-		
+
 		switch(args[0]){
 		case "get-messages":
+			if(args.length == 2 && args[1].equals("default")){
+				System.out.println("Running \'Get Comments\' default build");
+				parameters.add("30.0");
+				parameters.add("0");
+				parameters.add("40.5647994");
+				parameters.add("-74.3561006");
+				parameters.add("R/556616c60b1cef81f019723059154");
+			}
+
+			else{
+				System.out.println("Starting \'Get Comments\' request build");
+
+				//Parse accuracy
+				System.out.print("Enter accuracy (default 30.0): ");
+				parameters.add(input.next());
+
+				//Parse basecamp
+				System.out.print("Enter basecamp (default 0): ");
+				parameters.add(String.valueOf(input.nextInt()));
+
+				//Parse lat
+				System.out.print("Enter lat (recomended 40.5647994): ");
+				parameters.add(input.next());
+
+				//Parse long
+				System.out.print("Enter long (recomended -74.3561006): ");
+				parameters.add(input.next());
+				
+				//Parse messageID
+				System.out.print("Enter messageID (recomended R/556616c60b1cef81f019723059154): ");
+				parameters.add(input.next());
+			}
+			System.out.println(YikYakAPI.getYaks(parameters).text());
+			System.exit(0);
+			break;
+		case "get-comments":
 			if(args.length == 2 && args[1].equals("default")){
 				System.out.println("Running \'Get Message\' default build");
 				parameters.add("30.0");
@@ -80,7 +116,7 @@ public class Main {
 				System.out.print("Enter long (recomended -74.3561006): ");
 				parameters.add(input.next());
 			}
-			System.out.println(YikYakAPI.getMessages(parameters).text());
+			System.out.println(YikYakAPI.getYaks(parameters).text());
 			System.exit(0);
 			break;
 
