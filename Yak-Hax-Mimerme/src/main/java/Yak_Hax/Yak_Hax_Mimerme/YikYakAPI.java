@@ -4,14 +4,17 @@ import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Map;
 
+import org.jsoup.Connection.KeyVal;
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 
 public class YikYakAPI {
+	//TODO: Unify a better basecamp method, and remove it from the argument requirements
+	
 	static final String BASE_URL = "https://us-central-api.yikyakapi.net";
-	//use the dns found IP to prevent DNS lookup errors (it happens on my network ;_;)
 	static final String BASE_ENCODER_URL = "https://yakhax-encoder.herokuapp.com/?message=";
 
 	static final String YIKYAK_VERSION = "2.8.1";
@@ -351,7 +354,7 @@ public class YikYakAPI {
 		return makeRequest(request);
 	}
 
-	public static Element postYak(ArrayList<String> parameters, ArrayList<String> postData) throws IOException{
+	public static Element postYak(Map<String, String> parameters) throws IOException{
 		String request, hashMessage;
 
 		request = BASE_URL;
@@ -359,18 +362,18 @@ public class YikYakAPI {
 
 		hashMessage += "sendMessage?";
 
-		hashMessage += "token=" + parameters.get(0)
-				+ "&userID=" + parameters.get(1) + "&version=" + YikYakAPI.YIKYAK_VERSION;
+		hashMessage += "bc=0&" + "token=" + YikYakProfile.TOKEN
+				+ "&userID=" + YikYakProfile.USER_ID + "&version=" + YikYakAPI.YIKYAK_VERSION;
 
 		String salt = getSalt();
 		String hashValue = getHash(hashMessage + salt);
+		
+		request += hashMessage + "&salt=" + salt + "&hash=" + hashValue;
 
-		request += "bc" + postData.get(0) + "bypassedThreatPopup" + postData.get(1)
-				+ "hash=" + hashValue + "&lat=" + postData.get(2) + "&long=" + postData.get(3)
-				+ "&message=" + convertMessage(postData.get(4)) + "&salt=" + salt + "&token=" + parameters.get(0)
-				+ "&userID=" + parameters.get(1) + "&version=" + YikYakAPI.YIKYAK_VERSION;
-
-		return makeRequest(request);
+		parameters.put("salt", salt);
+		parameters.put("hash", hashValue);
+		
+		return makePostRequest(request, parameters);
 	}
 	
 	//Convert the message to something for the request
@@ -413,7 +416,7 @@ public class YikYakAPI {
 		return null;
 	}
 	
-	private static Element makePostRequest(String request){
+	private static Element makePostRequest(String request, Map<String, String> formData){
 		System.out.println(request);
 
 		System.out.println("Response value:");
@@ -422,6 +425,7 @@ public class YikYakAPI {
 					.userAgent(APIUtils.generateRandomUserAgent())
 					.ignoreContentType(true)
 					.timeout(60 * 1000)
+					.data(formData)
 					.post()
 					.body();
 		} catch (HttpStatusException e) {
@@ -453,7 +457,7 @@ public class YikYakAPI {
 
 	//Get HASH value from server
 	@SuppressWarnings("deprecation")
-	private static String getHash(String message){
+	public static String getHash(String message){
 		System.out.println("Getting the HASH value of " + message);
 		try {
 			String hash = Jsoup.connect(BASE_ENCODER_URL + URLEncoder.encode(message)).get()
@@ -463,6 +467,7 @@ public class YikYakAPI {
 		catch(SocketTimeoutException e){
 			System.out.println("There was a SocketTimeoutException, wait for the HASH server "
 					+ "to wake up");
+			System.exit(1);
 		}
 		catch (IOException e) {
 			// TODO Auto-generated catch block

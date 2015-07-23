@@ -8,6 +8,8 @@ import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 import org.jsoup.HttpStatusException;
@@ -39,6 +41,7 @@ public class Main {
 
 
 		ArrayList<String> parameters = new ArrayList<String>();
+		Map<String, String> postParameters = new HashMap<String, String>();
 
 		if(YikYakProfile.TOKEN == null || YikYakProfile.USER_ID == null){
 			System.out.println("[ERROR!] UserId / Token remains unset");
@@ -56,6 +59,15 @@ public class Main {
 		parameters.add("40.5647994");
 		parameters.add("-74.3561006");
 		parameters.add("R/556616c60b1cef81f019723059154");
+		
+		postParameters.put("bc", "0");
+		postParameters.put("bypassedThreatPopup", "0");
+		postParameters.put("lat", "40.5647994");
+		postParameters.put("long", "-74.3561006");
+		postParameters.put("message", "I feel bored");
+		postParameters.put("token", YikYakProfile.TOKEN);
+		postParameters.put("userID", YikYakProfile.USER_ID);
+		postParameters.put("version", YikYakAPI.YIKYAK_VERSION);
 
 		switch(args[0]){
 		case "get-messages":
@@ -63,7 +75,7 @@ public class Main {
 				System.out.println("Running \'Get Messages\' default build");
 			else{
 				System.out.println("Starting \'Get Comments\' request build");
-
+				parameters.clear();
 				//Parse accuracy
 				System.out.println("Enter accuracy (default 30.0): ");
 				parameters.add(input.next());
@@ -88,6 +100,44 @@ public class Main {
 			System.out.println(YikYakAPI.getMyTops(parameters).text());
 			System.exit(0);
 			break;
+		case "test-hash":
+			System.out.println("Enter decoded request:");
+			System.out.println(YikYakAPI.getHash(input.next()));
+			break;
+		case "post-yak":
+			if(args.length == 2 && args[1].equals("default"))
+				System.out.println("Running \'Post Yak\' default build");
+			else{
+				System.out.println("Running \'Post Yak\' request build");
+				postParameters.clear();
+				
+				//Parse basecamp
+				System.out.println("Enter basecamp (default 0): ");
+				postParameters.put("bc", String.valueOf(input.nextInt()));
+
+				//Parse bypassedThreatPopup
+				System.out.println("Enter bypassedThreatPopup (default 0): ");
+				postParameters.put("bypassedThreatPopup", String.valueOf(input.nextInt()));
+
+				//Parse lat
+				System.out.println("Enter lat (recomended 40.5647994): ");
+				postParameters.put("lat", input.next());
+
+				//Parse long
+				System.out.println("Enter long (recomended -74.3561006): ");
+				postParameters.put("long", input.next());
+				
+				//Parse message
+				System.out.println("Enter message (default\'I am bored\'): ");
+				postParameters.put("message", input.next());
+				
+				postParameters.put("token", YikYakProfile.TOKEN);
+				postParameters.put("userID", YikYakProfile.USER_ID);
+				postParameters.put("version", YikYakAPI.YIKYAK_VERSION);
+			}
+			System.out.println(YikYakAPI.postYak(postParameters).text());
+			System.exit(0);
+			break;
 		case "get-areatop":
 			System.out.println("Running \'Get AreaTop\' default build");
 			System.out.println(YikYakAPI.getAreaTop(parameters).text());
@@ -105,9 +155,10 @@ public class Main {
 			break;
 		case "get-comments":
 			if(args.length == 2 && args[1].equals("default"))
-				System.out.println("Running \'Get Message\' default build");
+				System.out.println("Running \'Get Comments\' default build");
 			else{
 				System.out.println("Starting \'Get Comments\' request build");
+				parameters.clear();
 
 				//Parse accuracy
 				System.out.println("Enter accuracy (default 30.0): ");
