@@ -13,6 +13,11 @@ import org.jsoup.nodes.Element;
 
 public class YikYakAPI {
 	//TODO: Unify a better basecamp method, and remove it from the argument requirements
+	//It is recommended to use an external JSON parsing library
+	//Yak-Hax does not parse the JSON for you
+	//Check documentation on parsing the JSONs
+	
+	//TODO: API still needs testing to confirm all gears/methods work succesfully
 	
 	static final String BASE_URL = "https://us-central-api.yikyakapi.net";
 	static final String BASE_ENCODER_URL = "https://yakhax-encoder.herokuapp.com/?message=";
@@ -196,6 +201,33 @@ public class YikYakAPI {
 		request += hashMessage + "&salt=" + salt + "&hash=" + hashValue;
 
 		return makeRequest(request);
+	}
+	
+	public static Element postComment(ArrayList<String> parameters, Map<String, String> formParameters) throws IOException{
+		String request, hashMessage;
+
+		request = BASE_URL;
+		hashMessage = "/api/";
+
+		hashMessage += "downvoteMessage?";
+
+		hashMessage += "accuracy=" + parameters.get(0) + "&altitude=" + parameters.get(5)
+				+ "&bc=" + parameters.get(1)
+				+ "&messageID=" + parameters.get(4) + "&token=" + YikYakProfile.TOKEN
+				+ "&userID=" + YikYakProfile.USER_ID + "&userLat=" + parameters.get(2)
+				+ "&userLong=" + parameters.get(3) + "&version=" + YIKYAK_VERSION;
+
+		String salt = getSalt();
+		String hashValue = getHash(hashMessage + salt);
+
+		request += hashMessage + "&salt=" + salt + "&hash=" + hashValue;
+		formParameters.put("salt", salt);
+		formParameters.put("hash", hashValue);
+		formParameters.put("accuracy", parameters.get(0));
+		formParameters.put("altitude", parameters.get(5));
+
+		
+		return makePostRequest(request, formParameters);
 	}
 	
 	public static Element downvoteYak(ArrayList<String> parameters) throws IOException{

@@ -63,8 +63,11 @@ public class Main {
 		postParameters.put("bc", "0");
 		postParameters.put("bypassedThreatPopup", "0");
 		postParameters.put("lat", "40.5647994");
-		postParameters.put("long", "-74.3561006");
+		postParameters.put("userLat", "40.5647994");
+		postParameters.put("userLong", "-74.3561006");
 		postParameters.put("message", "I feel bored");
+		postParameters.put("comment", "I feel bored");
+		postParameters.put("messageID", "R/556616c60b1cef81f019723059154");
 		postParameters.put("token", YikYakProfile.TOKEN);
 		postParameters.put("userID", YikYakProfile.USER_ID);
 		postParameters.put("version", YikYakAPI.YIKYAK_VERSION);
