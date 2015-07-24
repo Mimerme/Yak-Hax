@@ -3,6 +3,7 @@ package Yak_Hax.Yak_Hax_Mimerme;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.net.URLEncoder;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -203,6 +204,7 @@ public class YikYakAPI {
 		return makeRequest(request);
 	}
 	
+	//TODO: Check if altitude is still a valid parameter
 	public static Element postComment(ArrayList<String> parameters, Map<String, String> formParameters) throws IOException{
 		String request, hashMessage;
 
@@ -211,7 +213,7 @@ public class YikYakAPI {
 
 		hashMessage += "downvoteMessage?";
 
-		hashMessage += "accuracy=" + parameters.get(0) + "&altitude=" + parameters.get(5)
+		hashMessage += "accuracy=" + parameters.get(0)
 				+ "&bc=" + parameters.get(1)
 				+ "&messageID=" + parameters.get(4) + "&token=" + YikYakProfile.TOKEN
 				+ "&userID=" + YikYakProfile.USER_ID + "&userLat=" + parameters.get(2)
@@ -224,7 +226,6 @@ public class YikYakAPI {
 		formParameters.put("salt", salt);
 		formParameters.put("hash", hashValue);
 		formParameters.put("accuracy", parameters.get(0));
-		formParameters.put("altitude", parameters.get(5));
 
 		
 		return makePostRequest(request, formParameters);
@@ -293,6 +294,39 @@ public class YikYakAPI {
 		String hashValue = getHash(hashMessage + salt);
 
 		request += hashMessage + "&salt=" + salt + "&hash=" + hashValue;
+
+		return makeRequest(request);
+	}
+	
+	public static Element registerNewUser(ArrayList<String> parameters) throws NoSuchAlgorithmException{
+		String request, hashMessage;
+
+		request = BASE_URL;
+		hashMessage = "/api/";
+
+		hashMessage += "registerUser?";
+
+		String deviceID = APIUtils.generateDeviceID();
+		String userID = APIUtils.generateDeviceID();
+		String userAgent = APIUtils.generateRandomUserAgent();
+		String token = APIUtils.convertMD5(userAgent);
+		
+		hashMessage += "accuracy=" + parameters.get(0)
+				+ "&deviceID=" + deviceID + "&lat=" + parameters.get(2)
+				+ "&long=" + parameters.get(3) + "&token=" + token
+				+ "&userID=" + userID + "&userLat=" + parameters.get(2)
+				+ "&userLong=" + parameters.get(3) + "&version=" + YIKYAK_VERSION;
+
+		String salt = getSalt();
+		String hashValue = getHash(hashMessage + salt);
+
+		request += hashMessage + "&salt=" + salt + "&hash=" + hashValue;
+
+		System.out.println("New user is being generated with the following values");
+		System.out.println("DeviceID: " + deviceID);
+		System.out.println("UserID: " + userID);
+		System.out.println("User Agent: " + userAgent);
+		System.out.println("Token: " + token);
 
 		return makeRequest(request);
 	}

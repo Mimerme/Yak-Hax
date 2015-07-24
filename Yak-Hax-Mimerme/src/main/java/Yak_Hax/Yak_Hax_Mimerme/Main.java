@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.URLEncoder;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,12 +23,14 @@ public class Main {
 	static final String API_VERSION = "0.9a";
 
 	static Scanner input = new Scanner(System.in);
-
+	//TODO: Convert all ArrayList Parameters to HashMaps
+	
 	//https://us-central-api.yikyakapi.net/api
 	//endpoint
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
 		System.out.println("Util API debugger " + API_VERSION);
+		System.out.println("This branch of the API requires the jUtilConsole, check the GitHub repository for more details");
 		if(PRELOAD_CONFIG){
 			System.out.println(System.getenv("UTILS_PATH") + "\\yhack\\values.txt");
 			FileInputStream fs= new FileInputStream(System.getenv("UTILS_PATH") + "\\yhack\\values.txt");
@@ -59,7 +62,8 @@ public class Main {
 		parameters.add("40.5647994");
 		parameters.add("-74.3561006");
 		parameters.add("R/556616c60b1cef81f019723059154");
-		
+		parameters.add("R/556616c60b1cef81f019723059154");
+
 		postParameters.put("bc", "0");
 		postParameters.put("bypassedThreatPopup", "0");
 		postParameters.put("lat", "40.5647994");
@@ -73,6 +77,12 @@ public class Main {
 		postParameters.put("version", YikYakAPI.YIKYAK_VERSION);
 
 		switch(args[0]){
+		case "test-md5":
+			System.out.println(APIUtils.convertMD5(args[1]));
+			break;
+		case "new-user":
+			YikYakAPI.registerNewUser(parameters);
+			break;
 		case "get-messages":
 			if(args.length == 2 && args[1].equals("default"))
 				System.out.println("Running \'Get Messages\' default build");
