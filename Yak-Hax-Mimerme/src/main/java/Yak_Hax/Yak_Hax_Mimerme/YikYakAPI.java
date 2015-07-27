@@ -25,6 +25,10 @@ public class YikYakAPI {
 
 	static final String YIKYAK_VERSION = "2.8.1";
 	
+	public static String getAPIVersion(){
+		return Main.API_VERSION;
+	}
+	
 	//Gets all local Yaks
 	public static Element getYaks(ArrayList<String> parameters) throws IOException{
 		String request, hashMessage;
