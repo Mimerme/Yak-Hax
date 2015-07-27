@@ -298,7 +298,7 @@ public class YikYakAPI {
 		return makeRequest(request);
 	}
 	
-	public static Element registerNewUser(ArrayList<String> parameters) throws NoSuchAlgorithmException{
+	public static String[] registerNewUser(ArrayList<String> parameters) throws NoSuchAlgorithmException{
 		String request, hashMessage;
 
 		request = BASE_URL;
@@ -328,7 +328,9 @@ public class YikYakAPI {
 		System.out.println("User Agent: " + userAgent);
 		System.out.println("Token: " + token);
 
-		return makeRequest(request);
+		return new String[]{
+				deviceID,userID,userAgent,token
+		};
 	}
 	
 	//Loads an area's hot Yaks and its comments
