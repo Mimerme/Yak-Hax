@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
@@ -20,7 +22,6 @@ import org.jsoup.nodes.Element;
 public class Main {
 
 	static final boolean PRELOAD_CONFIG = true;
-	public static final String API_VERSION = "0.9.5a";
 
 	static Scanner input = new Scanner(System.in);
 	//TODO: Convert all ArrayList Parameters to HashMaps
@@ -29,14 +30,13 @@ public class Main {
 	//endpoint
 
 	public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
-		System.out.println("Util API debugger " + API_VERSION);
+		System.out.println("Util API debugger " + YikYakAPI.getAPIVersion());
 		System.out.println("This branch of the API requires the jUtilConsole, check the GitHub repository for more details");
 		if(PRELOAD_CONFIG){
 			System.out.println(System.getenv("UTILS_PATH") + "\\yhack\\values.txt");
 			FileInputStream fs= new FileInputStream(System.getenv("UTILS_PATH") + "\\yhack\\values.txt");
 			BufferedReader br = new BufferedReader(new InputStreamReader(fs));
-			YikYakProfile.TOKEN = br.readLine();
-			YikYakProfile.USER_ID = br.readLine();
+			YikYakAPI.login(br.readLine(), br.readLine());
 			System.out.println("Setting credentials as");
 			System.out.println(YikYakProfile.TOKEN + " : " + YikYakProfile.USER_ID);
 			System.out.println("==============================================================");
@@ -53,16 +53,27 @@ public class Main {
 
 		if(args.length == 0){
 			System.out.println("UtilConsole YikYak API Debugger");
-			System.out.println("Version " + Main.API_VERSION);
+			System.out.println("Version " + YikYakAPI.getAPIVersion());
 			System.exit(0);
 		}
 
-		parameters.add("30.0");
+		parameters.add("48.0");
 		parameters.add("0");
 		parameters.add("40.5647994");
 		parameters.add("-74.3561006");
 		parameters.add("R/556616c60b1cef81f019723059154");
 		parameters.add("R/556616c60b1cef81f019723059154");
+		
+		SortedMap<String, String> getparameters = new TreeMap<String, String>();
+		getparameters.put("accuracy", "48.0");
+		getparameters.put("bc", "0");
+		getparameters.put("long", "-74.3561006");
+		getparameters.put("lat", "40.5647994");
+		getparameters.put("userLat", "40.5647994");
+		getparameters.put("userLong", "-74.3561006");
+		getparameters.put("userID", YikYakProfile.USER_ID);
+		getparameters.put("token", YikYakProfile.TOKEN);
+		getparameters.put("version", YikYakAPI.YIKYAK_VERSION);
 
 		postParameters.put("bc", "0");
 		postParameters.put("bypassedThreatPopup", "0");
@@ -105,7 +116,7 @@ public class Main {
 				System.out.println("Enter long (recomended -74.3561006): ");
 				parameters.add(input.next());
 			}
-			System.out.println(YikYakAPI.getYaks(parameters).text());
+			System.out.println(YikYakAPI.getYaks(getparameters).text());
 			System.exit(0);
 			break;
 		case "get-mytops":

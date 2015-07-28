@@ -5,7 +5,11 @@ import java.net.SocketTimeoutException;
 import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.SortedMap;
 
 import org.jsoup.Connection.KeyVal;
 import org.jsoup.HttpStatusException;
@@ -18,61 +22,36 @@ public class YikYakAPI {
 	//Yak-Hax does not parse the JSON for you
 	//Check documentation on parsing the JSONs
 	
-	//TODO: API still needs testing to confirm all gears/methods work succesfully
+	//TODO: API still needs testing to confirm all methods work successfully
 	
 	static final String BASE_URL = "https://us-central-api.yikyakapi.net";
 	static final String BASE_ENCODER_URL = "https://yakhax-encoder.herokuapp.com/?message=";
 
-	static final String YIKYAK_VERSION = "2.8.1";
-	
+	static final String YIKYAK_VERSION = "2.8.2";
+	static final String API_VERSION = "0.9.5a";
+
 	public static String getAPIVersion(){
-		return Main.API_VERSION;
+		return API_VERSION;
+	}
+	
+	public static String getYikYakVersion(){
+		return API_VERSION;
+	}
+	
+	public static boolean login(String userID, String token){
+		YikYakProfile.USER_ID = userID;
+		YikYakProfile.TOKEN = token;
+		return true;
 	}
 	
 	//Gets all local Yaks
-	public static Element getYaks(ArrayList<String> parameters) throws IOException{
-		String request, hashMessage;
-
-		request = BASE_URL;
-		hashMessage = "/api/";
-
-		hashMessage += "getMessages?";
-
-		hashMessage += "accuracy=" + parameters.get(0)
-				+ "&bc=" + parameters.get(1) + "&lat=" + parameters.get(2)
-				+ "&long=" + parameters.get(3) + "&token=" + YikYakProfile.TOKEN
-				+ "&userID=" + YikYakProfile.USER_ID + "&userLat=" + parameters.get(2)
-				+ "&userLong=" + parameters.get(3) + "&version=" + YIKYAK_VERSION;
-
-		String salt = getSalt();
-		String hashValue = getHash(hashMessage + salt);
-
-		request += hashMessage + "&salt=" + salt + "&hash=" + hashValue;
-
-		return makeRequest(request);
+	public static Element getYaks(SortedMap<String, String> parameters) throws IOException{
+		return makeRequest(parseGetQuery("getMessages", parameters));
 	}
 	
 	//Loads a Yak and its comments
-	public static Element getYakComments(ArrayList<String> parameters) throws IOException{
-		String request, hashMessage;
-
-		request = BASE_URL;
-		hashMessage = "/api/";
-
-		hashMessage += "getComments?";
-
-		hashMessage += "accuracy=" + parameters.get(0)
-				+ "&bc=" + parameters.get(1) + "&lat=" + parameters.get(2)
-				+ "&messageID=" + parameters.get(4) + "&token=" + YikYakProfile.TOKEN
-				+ "&userID=" + YikYakProfile.USER_ID + "&userLat=" + parameters.get(2)
-				+ "&userLong=" + parameters.get(3) + "&version=" + YIKYAK_VERSION;
-
-		String salt = getSalt();
-		String hashValue = getHash(hashMessage + salt);
-
-		request += hashMessage + "&salt=" + salt + "&hash=" + hashValue;
-
-		return makeRequest(request);
+	public static Element getYakComments(SortedMap<String, String> parameters) throws IOException{
+		return makeRequest(parseGetQuery("getComments", parameters));
 	}
 	
 	public static Element upvoteComment(ArrayList<String> parameters) throws IOException{
@@ -280,29 +259,11 @@ public class YikYakAPI {
 	}
 	
 	//Loads an area's hot Yaks and its comments
-	public static Element getAreaHot(ArrayList<String> parameters) throws IOException{
-		String request, hashMessage;
-
-		request = BASE_URL;
-		hashMessage = "/api/";
-
-		hashMessage += "hot?";
-
-		hashMessage += "accuracy=" + parameters.get(0)
-				+ "&bc=" + parameters.get(1) + "&lat=" + parameters.get(2)
-				+ "&long=" + parameters.get(3) + "&token=" + YikYakProfile.TOKEN
-				+ "&userID=" + YikYakProfile.USER_ID + "&userLat=" + parameters.get(2)
-				+ "&userLong=" + parameters.get(3) + "&version=" + YIKYAK_VERSION;
-
-		String salt = getSalt();
-		String hashValue = getHash(hashMessage + salt);
-
-		request += hashMessage + "&salt=" + salt + "&hash=" + hashValue;
-
-		return makeRequest(request);
+	public static Element getAreaHot(SortedMap<String, String> parameters) throws IOException{
+		return makeRequest(parseGetQuery("hot", parameters));
 	}
 	
-	public static String[] registerNewUser(ArrayList<String> parameters) throws NoSuchAlgorithmException{
+	public static String[] registerNewUser() throws NoSuchAlgorithmException{
 		String request, hashMessage;
 
 		request = BASE_URL;
@@ -315,11 +276,11 @@ public class YikYakAPI {
 		String userAgent = APIUtils.generateRandomUserAgent();
 		String token = APIUtils.convertMD5(userAgent);
 		
-		hashMessage += "accuracy=" + parameters.get(0)
-				+ "&deviceID=" + deviceID + "&lat=" + parameters.get(2)
-				+ "&long=" + parameters.get(3) + "&token=" + token
-				+ "&userID=" + userID + "&userLat=" + parameters.get(2)
-				+ "&userLong=" + parameters.get(3) + "&version=" + YIKYAK_VERSION;
+		hashMessage += "accuracy=" + YikYakProfile.ACCURACY
+				+ "&deviceID=" + deviceID + "&lat=" + YikYakProfile.LAT
+				+ "&long=" + YikYakProfile.LONG + "&token=" + token
+				+ "&userID=" + userID + "&userLat=" + YikYakProfile.LAT
+				+ "&userLong=" + YikYakProfile.LONG + "&version=" + YIKYAK_VERSION;
 
 		String salt = getSalt();
 		String hashValue = getHash(hashMessage + salt);
@@ -333,97 +294,43 @@ public class YikYakAPI {
 		System.out.println("Token: " + token);
 
 		return new String[]{
-				deviceID,userID,userAgent,token
+				userID,token,deviceID,userAgent
 		};
 	}
 	
-	//Loads an area's hot Yaks and its comments
-	public static Element getAreaTop(ArrayList<String> parameters) throws IOException{
-		String request, hashMessage;
-
-		request = BASE_URL;
-		hashMessage = "/api/";
-
-		hashMessage += "top?";
-
-		hashMessage += "accuracy=" + parameters.get(0)
-				+ "&bc=" + parameters.get(1) + "&lat=" + parameters.get(2)
-				+ "&long=" + parameters.get(3) + "&token=" + YikYakProfile.TOKEN
-				+ "&userID=" + YikYakProfile.USER_ID + "&userLat=" + parameters.get(2)
-				+ "&userLong=" + parameters.get(3) + "&version=" + YIKYAK_VERSION;
-
-		String salt = getSalt();
-		String hashValue = getHash(hashMessage + salt);
-
-		request += hashMessage + "&salt=" + salt + "&hash=" + hashValue;
-
-		return makeRequest(request);
+	private static String parseGetQuery(String requestType, SortedMap<String, String> parameters){
+		String query = "/api/" + requestType + "?";
+		Iterator it = parameters.entrySet().iterator();
+	    while (it.hasNext()) {
+	        Map.Entry pair = (Map.Entry)it.next();
+	        query += pair.getKey() + "=" + pair.getValue() + "&";
+	        it.remove();
+	    }
+	    query = query.substring(0, query.length() - 1);
+	    
+	    String salt = getSalt();
+		String hashValue = getHash(query + salt);
+		
+		String request = BASE_URL;
+		request += query + "&salt=" + salt + "&hash=" + hashValue;
+	    
+	    return request;
 	}
 	
-	public static Element getMyRecentYaks(ArrayList<String> parameters) throws IOException{
-		String request, hashMessage;
-
-		request = BASE_URL;
-		hashMessage = "/api/";
-
-		hashMessage += "getMyRecentYaks?";
-
-		hashMessage += "accuracy=" + parameters.get(0)
-				+ "&bc=" + parameters.get(1) + "&lat=" + parameters.get(2)
-				+ "&long=" + parameters.get(3) + "&token=" + YikYakProfile.TOKEN
-				+ "&userID=" + YikYakProfile.USER_ID + "&userLat=" + parameters.get(2)
-				+ "&userLong=" + parameters.get(3) + "&version=" + YIKYAK_VERSION;
-
-		String salt = getSalt();
-		String hashValue = getHash(hashMessage + salt);
-
-		request += hashMessage + "&salt=" + salt + "&hash=" + hashValue;
-
-		return makeRequest(request);
-	}
-
-	public static Element getMyTops(ArrayList<String> parameters) throws IOException{
-		String request, hashMessage;
-
-		request = BASE_URL;
-		hashMessage = "/api/";
-
-		hashMessage += "getMyTops?";
-
-		hashMessage += "accuracy=" + parameters.get(0)
-				+ "&bc=" + parameters.get(1) + "&lat=" + parameters.get(2)
-				+ "&long=" + parameters.get(3) + "&token=" + YikYakProfile.TOKEN
-				+ "&userID=" + YikYakProfile.USER_ID + "&userLat=" + parameters.get(2)
-				+ "&userLong=" + parameters.get(3) + "&version=" + YIKYAK_VERSION;
-
-		String salt = getSalt();
-		String hashValue = getHash(hashMessage + salt);
-
-		request += hashMessage + "&salt=" + salt + "&hash=" + hashValue;
-
-		return makeRequest(request);
+	public static Element getAreaTop(SortedMap<String, String> parameters) throws IOException{
+		return makeRequest(parseGetQuery("top", parameters));
 	}
 	
-	public static Element getMyRecentReplies(ArrayList<String> parameters) throws IOException{
-		String request, hashMessage;
+	public static Element getMyRecentYaks(SortedMap<String, String> parameters) throws IOException{
+		return makeRequest(parseGetQuery("getMyRecentYaks", parameters));
+	}
 
-		request = BASE_URL;
-		hashMessage = "/api/";
-
-		hashMessage += "getMyRecentReplies?";
-
-		hashMessage += "accuracy=" + parameters.get(0)
-				+ "&bc=" + parameters.get(1) + "&lat=" + parameters.get(2)
-				+ "&long=" + parameters.get(3) + "&token=" + YikYakProfile.TOKEN
-				+ "&userID=" + YikYakProfile.USER_ID + "&userLat=" + parameters.get(2)
-				+ "&userLong=" + parameters.get(3) + "&version=" + YIKYAK_VERSION;
-
-		String salt = getSalt();
-		String hashValue = getHash(hashMessage + salt);
-
-		request += hashMessage + "&salt=" + salt + "&hash=" + hashValue;
-
-		return makeRequest(request);
+	public static Element getMyTops(SortedMap<String, String> parameters) throws IOException{
+		return makeRequest(parseGetQuery("getMyTops", parameters));
+	}
+	
+	public static Element getMyRecentReplies(SortedMap<String, String> parameters) throws IOException{
+		return makeRequest(parseGetQuery("getMyRecentReplies", parameters));
 	}
 
 	public static Element postYak(Map<String, String> parameters) throws IOException{
@@ -448,11 +355,6 @@ public class YikYakAPI {
 		return makePostRequest(request, parameters);
 	}
 	
-	//Convert the message to something for the request
-	private static String convertMessage(String message){
-		return message.replaceAll(" ", "+");
-	}
-	
 	//Makes the request to the YikYak API
 	private static Element makeRequest(String request){
 		System.out.println(request);
@@ -462,6 +364,8 @@ public class YikYakAPI {
 			return Jsoup.connect(request)
 					.userAgent(APIUtils.generateRandomUserAgent())
 					.ignoreContentType(true)
+					.header("Accept-Encoding", "gzip")
+					.header("Connection", "Keep-Alive")
 					.timeout(60 * 1000)
 					.get()
 					.body();
