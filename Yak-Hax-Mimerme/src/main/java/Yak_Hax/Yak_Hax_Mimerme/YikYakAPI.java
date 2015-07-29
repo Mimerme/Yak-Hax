@@ -443,7 +443,6 @@ public class YikYakAPI {
 		catch(SocketTimeoutException e){
 			System.out.println("There was a SocketTimeoutException, wait for the HASH server "
 					+ "to wake up");
-			System.exit(1);
 		}
 		catch (IOException e) {
 			// TODO Auto-generated catch block
