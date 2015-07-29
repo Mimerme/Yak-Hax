@@ -29,7 +29,7 @@ public class Main {
 	//https://us-central-api.yikyakapi.net/api
 	//endpoint
 
-	public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
+	public static void main(String[] args) throws IOException, NoSuchAlgorithmException {/*
 		System.out.println("Util API debugger " + YikYakAPI.getAPIVersion());
 		System.out.println("This branch of the API requires the jUtilConsole, check the GitHub repository for more details");
 		if(PRELOAD_CONFIG){
@@ -213,6 +213,6 @@ public class Main {
 			System.exit(0);
 			break;
 
-		}
+		}*/
 	}
 }
