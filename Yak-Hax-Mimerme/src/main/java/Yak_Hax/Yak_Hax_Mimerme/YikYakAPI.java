@@ -35,7 +35,7 @@ public class YikYakAPI {
 	}
 	
 	public static String getYikYakVersion(){
-		return API_VERSION;
+		return YIKYAK_VERSION;
 	}
 	
 	public static boolean login(String userID, String token){
