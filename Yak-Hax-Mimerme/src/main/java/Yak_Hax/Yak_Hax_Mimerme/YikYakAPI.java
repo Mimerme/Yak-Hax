@@ -267,10 +267,10 @@ public class YikYakAPI {
 
 	public static String[] registerNewUser() throws NoSuchAlgorithmException{
 
-		String deviceID = APIUtils.generateDeviceID();
-		String userID = APIUtils.generateDeviceID();
+		final String deviceID = APIUtils.generateDeviceID();
+		final String userID = APIUtils.generateDeviceID();
 		String userAgent = APIUtils.generateRandomUserAgent();
-		String token = APIUtils.convertMD5(userAgent);
+		final String token = APIUtils.convertMD5(userAgent);
 		
 		System.out.println("New user is being generated with the following values");
 		System.out.println("DeviceID: " + deviceID);
@@ -280,7 +280,7 @@ public class YikYakAPI {
 		
 		YikYakProfile.USER_AGENT = userAgent;
 		
-		String result = makeRequest(parseGetQuery("registerUser", new TreeMap<String, String>()
+		String result = makePostRequest(parseGetQuery("registerUser", new TreeMap<String, String>()
 				{{
 					put("accuracy", YikYakProfile.ACCURACY);
 					put("bc", YikYakProfile.BASECAMP);
@@ -288,10 +288,15 @@ public class YikYakAPI {
 					put("long", YikYakProfile.LONG);
 					put("userLat", YikYakProfile.LAT);
 					put("userLong", YikYakProfile.LONG);
-					put("userID", YikYakProfile.USER_ID);
-					put("token", YikYakProfile.TOKEN);
+					put("userID", userID);
+					put("token", token);
 					put("version", YikYakAPI.getYikYakVersion());
-				}})).text();
+					put("deviceID", deviceID);
+				}}), new TreeMap<String, String>(){{
+					put("Accept-Encoding", "gzip");
+					put("Connection", "Keep-Alive");
+				}}).text();
+				
 		
 		if(!result.equals("1")){
 			System.out.println("There was an error registering the user");
@@ -301,7 +306,7 @@ public class YikYakAPI {
 		System.out.println(result);
 		System.out.println("User Registered");
 		return new String[]{
-				userID,token,deviceID,userAgent
+				userID,token,deviceID,userAgent + " " + YikYakAPI.getYikYakVersion()
 		};
 	}
 
