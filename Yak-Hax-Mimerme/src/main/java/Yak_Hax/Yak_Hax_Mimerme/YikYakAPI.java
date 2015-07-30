@@ -39,9 +39,10 @@ public class YikYakAPI {
 		return YIKYAK_VERSION;
 	}
 
-	public static boolean login(String userID, String token){
+	public static boolean login(String userID, String token, String userAgent){
 		YikYakProfile.USER_ID = userID;
 		YikYakProfile.TOKEN = token;
+		YikYakProfile.USER_AGENT = userAgent;
 		return true;
 	}
 
@@ -363,7 +364,7 @@ public class YikYakAPI {
 				String requestURL = parseGetQuery("startVerification", query);
 
 				return PostRequest
-				.PostBodyRequest(requestURL, "{\"type\": \"sms\",\"number\": \"" + number + "\",\"country3\": \"USA\",\"prefix\": \"+1\"}" , APIUtils.generateRandomUserAgent());
+				.PostBodyRequest(requestURL, "{\"type\": \"sms\",\"number\": \"" + number + "\",\"country3\": \"USA\",\"prefix\": \"+1\"}" , YikYakProfile.USER_AGENT + " " + YikYakAPI.getYikYakVersion());
 	}
 	
 	public static String verifyAccount(final String userID, final String userToken, String verificationToken, String verificationCode) throws IOException{
@@ -378,7 +379,7 @@ public class YikYakAPI {
 				String json = "{\"token\": \"" + verificationToken + "\",\"userID\": \"" + userID + "\",\"code\": \"" + verificationCode + "\"}";
 				System.out.println(json);
 				
-				return PostRequest.PostBodyRequest(requestURL,json , APIUtils.generateRandomUserAgent());
+				return PostRequest.PostBodyRequest(requestURL,json , YikYakProfile.USER_AGENT + " " + YikYakAPI.getYikYakVersion());
 	}
 
 	public static Element postYak(Map<String, String> parameters) throws IOException{
@@ -408,7 +409,7 @@ public class YikYakAPI {
 		System.out.println(request);
 		try {
 			return Jsoup.connect(request)
-					.userAgent(APIUtils.generateRandomUserAgent())
+					.userAgent(YikYakProfile.USER_AGENT + " " + YikYakAPI.getYikYakVersion())
 					.ignoreContentType(true)
 					.timeout(60 * 1000)
 					.get()
@@ -441,7 +442,7 @@ public class YikYakAPI {
 		
 		try {
 			return Jsoup.connect(request)
-					.userAgent(APIUtils.generateRandomUserAgent())
+					.userAgent(YikYakProfile.USER_AGENT + "" + YikYakAPI.getYikYakVersion())
 					.ignoreContentType(true)
 					.timeout(60 * 1000)
 					.data(formData)
