@@ -278,6 +278,8 @@ public class YikYakAPI {
 		System.out.println("User Agent: " + userAgent + " " + YikYakAPI.getYikYakVersion());
 		System.out.println("Token: " + token);
 		
+		YikYakProfile.USER_AGENT = userAgent;
+		
 		String result = makeRequest(parseGetQuery("registerUser", new TreeMap<String, String>()
 				{{
 					put("accuracy", YikYakProfile.ACCURACY);
