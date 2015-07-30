@@ -275,7 +275,7 @@ public class YikYakAPI {
 		System.out.println("New user is being generated with the following values");
 		System.out.println("DeviceID: " + deviceID);
 		System.out.println("UserID: " + userID);
-		System.out.println("User Agent: " + userAgent);
+		System.out.println("User Agent: " + userAgent + " " + YikYakAPI.getYikYakVersion());
 		System.out.println("Token: " + token);
 		
 		String result = makeRequest(parseGetQuery("registerUser", new TreeMap<String, String>()
