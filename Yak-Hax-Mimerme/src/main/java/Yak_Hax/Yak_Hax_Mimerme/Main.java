@@ -29,7 +29,11 @@ public class Main {
 	//https://us-central-api.yikyakapi.net/api
 	//endpoint
 
-	public static void main(String[] args) throws IOException, NoSuchAlgorithmException {/*
+	public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
+		System.out.println(YikYakAPI.registerNewUser());
+/*		System.out.println(YikYakAPI.startVerifyAccount(YikYakProfile.TOKEN, "(732) 362-4979", "USA", "+1"));
+*//*		System.out.println(YikYakAPI.verifyAccount(YikYakProfile.USER_ID, YikYakProfile.TOKEN,"833brjut2x1q3cecdmrqgkuz88", "5284"));
+*//*		YikYakAPI.verifyAccount(YikYakProfile.USER_ID, YikYakProfile.TOKEN, "(908) 444-6806");
 		System.out.println("Util API debugger " + YikYakAPI.getAPIVersion());
 		System.out.println("This branch of the API requires the jUtilConsole, check the GitHub repository for more details");
 		if(PRELOAD_CONFIG){

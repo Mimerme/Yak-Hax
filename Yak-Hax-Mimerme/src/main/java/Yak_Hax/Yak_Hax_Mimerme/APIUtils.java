@@ -42,7 +42,7 @@ public class APIUtils {
 
 		String userAgent = base[0] + device + base[1] + buildString + base[2];
 
-		return userAgent;
+		return userAgent + " " + YikYakAPI.getYikYakVersion();
 	}
 
 	public static ArrayList<String> generateRandom(int num){
