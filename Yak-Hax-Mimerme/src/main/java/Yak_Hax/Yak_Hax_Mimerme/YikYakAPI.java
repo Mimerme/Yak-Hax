@@ -299,6 +299,7 @@ public class YikYakAPI {
 			return null;
 		}
 		System.out.println(result);
+		System.out.println("User Registered");
 		return new String[]{
 				userID,token,deviceID,userAgent
 		};
