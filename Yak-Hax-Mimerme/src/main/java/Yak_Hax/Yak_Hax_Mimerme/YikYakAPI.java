@@ -372,7 +372,7 @@ public class YikYakAPI {
 				String requestURL = parseGetQuery("startVerification", query);
 
 				return PostRequest
-				.PostBodyRequest(requestURL, "{\"type\": \"sms\",\"number\": \"" + number + "\",\"country3\": \"USA\",\"prefix\": \"+1\"}" , YikYakProfile.USER_AGENT + " " + YikYakAPI.getYikYakVersion());
+				.PostBodyRequest(requestURL, "{\"type\": \"sms\",\"number\": \"" + number + "\",\"country3\": \""+ c3Code +"\",\"prefix\": \"" + prefix + "\"}" , YikYakProfile.USER_AGENT + " " + YikYakAPI.getYikYakVersion());
 	}
 	
 	public static String verifyAccount(final String userID, final String userToken, String verificationToken, String verificationCode) throws IOException{
@@ -385,7 +385,6 @@ public class YikYakAPI {
 				String requestURL = parseGetQuery("verify", query);
 				
 				String json = "{\"token\": \"" + verificationToken + "\",\"userID\": \"" + userID + "\",\"code\": \"" + verificationCode + "\"}";
-				System.out.println(json);
 				
 				return PostRequest.PostBodyRequest(requestURL,json , YikYakProfile.USER_AGENT + " " + YikYakAPI.getYikYakVersion());
 	}

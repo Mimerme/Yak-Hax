@@ -12,7 +12,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 //had to do this manually cause JSoup doesn't support raw bodies in POST requests -_-
-//Really only used for JSON bodies and phone verification
+//Really only used for JSON bodies
 public class PostRequest {
 	public static String PostBodyRequest(String URL, String JSONRaw, String UserAgent) throws IOException{
 		String type = "application/json";
@@ -20,8 +20,7 @@ public class PostRequest {
 		HttpURLConnection conn = (HttpURLConnection) u.openConnection();
 		conn.setDoOutput(true);
 		conn.setRequestMethod("POST");
-		conn.setRequestProperty( "Accept-Encoding", "gzip" );
-		conn.setRequestProperty( "Connection", "Keep-Alive" );
+		conn.setRequestProperty( "Content-Type", type );
 		conn.setRequestProperty( "User-Agent", UserAgent );
 		OutputStream os = conn.getOutputStream();
 		os.write(JSONRaw.getBytes());
@@ -32,8 +31,8 @@ public class PostRequest {
 		DataInputStream input = new DataInputStream (conn.getInputStream());
 		while (null != ((response = input.readLine()))) {
 			input.close ();
-			break;
+			return response;
 		}
-		return response;
+		return null;
 	}
 }
