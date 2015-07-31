@@ -29,7 +29,7 @@ public class YikYakAPI {
 	static final String BASE_ENCODER_URL = "https://yakhax-encoder.herokuapp.com/?message=";
 
 	static final String YIKYAK_VERSION = "2.8.2";
-	static final String API_VERSION = "0.9.7a";
+	static final String API_VERSION = "0.9.8a";
 
 	public static String getAPIVersion(){
 		return API_VERSION;
