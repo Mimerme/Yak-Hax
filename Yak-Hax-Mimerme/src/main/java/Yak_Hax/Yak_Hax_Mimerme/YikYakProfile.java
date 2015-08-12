@@ -4,15 +4,15 @@ package Yak_Hax.Yak_Hax_Mimerme;
 //TODO: Don't make this a seperate class
 public class YikYakProfile {
 	//Enter your own token here
-	public static String TOKEN = "3E2BFEBAD6FCED52E0F576C9BDE9475F";
+	public static String TOKEN = "62D52B7BD290DB8E36D708336D16B85A";
 	
 	//Enter your own userID here
-	public static String USER_ID = "FDF56757F6A510E60B338332C39BBAF2";
+	public static String USER_ID = "203FA40ED03C8B1C753019991D0976CC";
 	
 	//Enter basecamp true - 1, or false - 0
 	public static String BASECAMP = "0";
 	
-	public static String USER_AGENT = "";
+	public static String USER_AGENT = "Dalvik/1.6.0 (Linux; U; Android 4.4.4; XT1080 Build/56106)";
 	
 	//Set lat and long
 	public static String LAT = "40.5647994";

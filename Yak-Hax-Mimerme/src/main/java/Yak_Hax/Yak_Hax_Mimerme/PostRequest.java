@@ -21,7 +21,7 @@ public class PostRequest {
 		conn.setDoOutput(true);
 		conn.setRequestMethod("POST");
 		conn.setRequestProperty( "Content-Type", type );
-		conn.setRequestProperty( "User-Agent", UserAgent );
+		conn.setRequestProperty( "User-Agent", UserAgent);
 		OutputStream os = conn.getOutputStream();
 		os.write(JSONRaw.getBytes());
 		os.flush();

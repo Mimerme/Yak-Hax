@@ -17,6 +17,8 @@ import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 
+import Yak_Hax.Yak_Hax_Mimerme.Exceptions.AuthorizationErrorException;
+
 public class YikYakAPI {
 	//TODO: Unify a better basecamp method, and remove it from the argument requirements
 	//It is recommended to use an external JSON parsing library
@@ -28,13 +30,18 @@ public class YikYakAPI {
 	static final String BASE_URL = "https://us-central-api.yikyakapi.net";
 	static final String BASE_ENCODER_URL = "https://yakhax-encoder.herokuapp.com/?message=";
 
-	static final String YIKYAK_VERSION = "2.8.2";
+	static String YIKYAK_VERSION = "2.8.2";
 	static final String API_VERSION = "0.9.8a";
 
 	public static String getAPIVersion(){
 		return API_VERSION;
 	}
 
+	//Should only be called for compatibility purposes
+	public static void setYikYakVersion(String version){
+		YIKYAK_VERSION = version;
+	}
+	
 	public static String getYikYakVersion(){
 		return YIKYAK_VERSION;
 	}
@@ -424,13 +431,23 @@ public class YikYakAPI {
 		} catch (HttpStatusException e) {
 			// TODO Auto-generated catch block
 			if(e.getStatusCode() == 401){
+				
+				try {
+					throw new AuthorizationErrorException("A 500 error has occured the request was not authorized");
+				} catch (AuthorizationErrorException e1) {
+					e1.printStackTrace();
+				}
+				
 				System.out.println("A 401 exception has occured, slow down your requests and"
 						+ " double check your query parameters");
 				return null;
 			}
 			else if(e.getStatusCode() == 500){
-				System.out.println("A 500 exception has occured, there may have been a problem with the User Agent"
-						+ " post this issue on GitHub");
+					try {
+						throw new AuthorizationErrorException("A 500 error has occured the request was not authorized");
+					} catch (AuthorizationErrorException e1) {
+						e1.printStackTrace();
+					}
 			}
 			else{
 				e.printStackTrace();
@@ -462,8 +479,11 @@ public class YikYakAPI {
 						+ " double check your query parameters");
 			}
 			else if(e.getStatusCode() == 500){
-				System.out.println("A 500 exception has occured, there may have been a problem with the User Agent"
-						+ " post this issue on GitHub");
+				try {
+					throw new AuthorizationErrorException(e.getMessage());
+				} catch (AuthorizationErrorException e1) {
+					e1.printStackTrace();
+				}
 			}
 			else{
 				e.printStackTrace();
