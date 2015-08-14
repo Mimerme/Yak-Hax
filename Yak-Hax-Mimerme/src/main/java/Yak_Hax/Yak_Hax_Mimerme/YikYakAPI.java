@@ -396,7 +396,7 @@ public class YikYakAPI {
 				return PostRequest.PostBodyRequest(requestURL,json , YikYakProfile.USER_AGENT + " " + YikYakAPI.getYikYakVersion());
 	}
 
-	public static Element postYak(Map<String, String> parameters) throws IOException{
+	public static Element postYak(SortedMap<String, String> parameters) throws IOException{
 		String request, hashMessage;
 
 		request = BASE_URL;
@@ -414,7 +414,7 @@ public class YikYakAPI {
 
 		parameters.put("salt", salt);
 		parameters.put("hash", hashValue);
-
+		
 		return makePostRequest(request, parameters);
 	}
 
@@ -461,7 +461,7 @@ public class YikYakAPI {
 		return null;
 	}
 
-	private static Element makePostRequest(String request, Map<String, String> formData){
+	private static Element makePostRequest(String request, Map<String, String> formParameters){
 		System.out.println(request);
 		
 		try {
@@ -469,7 +469,7 @@ public class YikYakAPI {
 					.userAgent(YikYakProfile.USER_AGENT + "" + YikYakAPI.getYikYakVersion())
 					.ignoreContentType(true)
 					.timeout(60 * 1000)
-					.data(formData)
+					.data(formParameters)
 					.post()
 					.body();
 		} catch (HttpStatusException e) {

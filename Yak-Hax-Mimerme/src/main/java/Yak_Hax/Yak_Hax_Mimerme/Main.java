@@ -30,8 +30,19 @@ public class Main {
 	//endpoint
 
 	public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
-		System.out.println(YikYakAPI.startVerifyAccount(YikYakProfile.TOKEN, "(908) 444-6806", "USA", "+1"));
-/*		System.out.println(YikYakAPI.verifyAccount(YikYakProfile.USER_ID, YikYakProfile.TOKEN,"833brjut2x1q3cecdmrqgkuz88", "5284"));
+		System.out.println(YikYakAPI.postYak(new TreeMap<String, String>()
+				{{
+					put("bypassedThreatPopup", "0");
+					put("userID", YikYakProfile.USER_ID);
+					put("lat", YikYakProfile.LAT);
+					put("long", YikYakProfile.LONG);
+					put("message", "Hitherefriends");
+					put("bc", YikYakProfile.BASECAMP);
+					put("version", YikYakAPI.YIKYAK_VERSION);
+					put("token", YikYakProfile.TOKEN);
+				}}).text());
+/*		System.out.println(YikYakAPI.startVerifyAccount(YikYakProfile.TOKEN, "(908) 444-6806", "USA", "+1"));
+*//*		System.out.println(YikYakAPI.verifyAccount(YikYakProfile.USER_ID, YikYakProfile.TOKEN,"833brjut2x1q3cecdmrqgkuz88", "5284"));
 *//*		YikYakAPI.verifyAccount(YikYakProfile.USER_ID, YikYakProfile.TOKEN, "(908) 444-6806");
 		System.out.println("Util API debugger " + YikYakAPI.getAPIVersion());
 		System.out.println("This branch of the API requires the jUtilConsole, check the GitHub repository for more details");
