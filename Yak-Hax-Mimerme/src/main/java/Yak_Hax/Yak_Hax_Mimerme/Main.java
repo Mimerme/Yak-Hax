@@ -30,7 +30,7 @@ public class Main {
 	//endpoint
 
 	public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
-		System.out.println(YikYakAPI.postYak(new TreeMap<String, String>()
+/*		System.out.println(YikYakAPI.postYak(new TreeMap<String, String>()
 				{{
 					put("bypassedThreatPopup", "0");
 					put("userID", YikYakProfile.USER_ID);
@@ -40,7 +40,7 @@ public class Main {
 					put("bc", YikYakProfile.BASECAMP);
 					put("version", YikYakAPI.YIKYAK_VERSION);
 					put("token", YikYakProfile.TOKEN);
-				}}).text());
+				}}).text());*/
 /*		System.out.println(YikYakAPI.startVerifyAccount(YikYakProfile.TOKEN, "(908) 444-6806", "USA", "+1"));
 *//*		System.out.println(YikYakAPI.verifyAccount(YikYakProfile.USER_ID, YikYakProfile.TOKEN,"833brjut2x1q3cecdmrqgkuz88", "5284"));
 *//*		YikYakAPI.verifyAccount(YikYakProfile.USER_ID, YikYakProfile.TOKEN, "(908) 444-6806");

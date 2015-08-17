@@ -5,17 +5,17 @@ import java.net.SocketTimeoutException;
 import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.jsoup.Connection.KeyVal;
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
+import org.parse4j.Parse;
+import org.parse4j.ParseException;
+import org.parse4j.ParseObject;
 
 import Yak_Hax.Yak_Hax_Mimerme.Exceptions.AuthorizationErrorException;
 
@@ -31,7 +31,12 @@ public class YikYakAPI {
 	static final String BASE_ENCODER_URL = "https://yakhax-encoder.herokuapp.com/?message=";
 
 	static String YIKYAK_VERSION = "2.8.2";
+	static String PARSE_VERSION = "1.7.1";
+	static String PARSE_PACKAGE_BUILD = "63";
+	static String PARSE_ENDPOINT = "https://api.parse.com/2/";
+	
 	static final String API_VERSION = "0.9.8a";
+	static final String USER_AGENT = "Parse Android SDK " + YikYakAPI.PARSE_VERSION + "(com.yik.yak/" + YikYakAPI.PARSE_PACKAGE_BUILD + ") API Level 19";
 
 	public static String getAPIVersion(){
 		return API_VERSION;
@@ -272,7 +277,7 @@ public class YikYakAPI {
 		return makeRequest(parseGetQuery("hot", parameters));
 	}
 
-	public static String[] registerNewUser() throws NoSuchAlgorithmException{
+	public static String[] registerNewUser() throws NoSuchAlgorithmException, ParseException{
 
 		final String deviceID = APIUtils.generateDeviceID();
 		final String userID = APIUtils.generateDeviceID();
@@ -311,10 +316,27 @@ public class YikYakAPI {
 			return null;
 		}
 		System.out.println(result);
-		System.out.println("User Registered");
+		System.out.println("User Registered on Yik Yak Servers");
+		
+		System.out.println("Registering UserID on Parse servers");
+		YikYakAPI.createInstallation();
 		return new String[]{
 				userID,token,deviceID,userAgent + " " + YikYakAPI.getYikYakVersion()
 		};
+	}
+	
+	private static void createInstallation() throws ParseException{
+		YikYakProfile.PARSE_ID = YikYakProfile.USER_ID.toLowerCase();
+		Parse.initialize(YikYakProfile.PARSE_CLIENT_KEY, YikYakProfile.PARSE_APPLICAITON_KEY);
+		ParseObject yikyak = new ParseObject("create");
+		yikyak.put("appIdentifier", "com.yik.yak");
+		yikyak.put("appName", "Yik Yak");
+		yikyak.put("appVersion", YikYakAPI.YIKYAK_VERSION);
+		yikyak.put("deviceType", "android");
+		yikyak.put("installationId", YikYakProfile.PARSE_ID);
+		yikyak.put("parseVersion", YikYakAPI.PARSE_VERSION);
+		yikyak.put("timeZone", "America/New_York");
+		yikyak.save();
 	}
 
 	private static String parseGetQuery(String requestType, SortedMap<String, String> parameters){

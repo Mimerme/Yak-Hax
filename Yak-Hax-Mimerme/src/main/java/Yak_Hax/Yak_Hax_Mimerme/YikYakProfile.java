@@ -22,4 +22,9 @@ public class YikYakProfile {
 	public static String ACCURACY = "48.0";
 	
 	public static String ALTITUDE = "40";
+	
+	//Yik-Yak's parse keys
+	public static String PARSE_APPLICAITON_KEY = "wMkdjBI4ircsNcRn8mXnBkgH0dwOcrkexrdMY3vY";
+	public static String PARSE_CLIENT_KEY = "GbNFwvFgoUu1wYuwIexNImy8bnSlNhqssG7gd53Y";
+	public static String PARSE_ID = "Generic Placeholder";
 }
