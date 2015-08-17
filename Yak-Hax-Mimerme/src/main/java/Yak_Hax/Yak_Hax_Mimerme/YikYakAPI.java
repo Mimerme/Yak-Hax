@@ -35,7 +35,7 @@ public class YikYakAPI {
 	static String PARSE_PACKAGE_BUILD = "63";
 	static String PARSE_ENDPOINT = "https://api.parse.com/2/";
 	
-	static final String API_VERSION = "0.9.8a";
+	static final String API_VERSION = "0.9.8.7a";
 	static final String USER_AGENT = "Parse Android SDK " + YikYakAPI.PARSE_VERSION + "(com.yik.yak/" + YikYakAPI.PARSE_PACKAGE_BUILD + ") API Level 19";
 
 	public static String getAPIVersion(){
