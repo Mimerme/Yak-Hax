@@ -1,36 +1,36 @@
 package Yak_Hax.Yak_Hax_Mimerme;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
-import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.security.SignatureException;
+import java.util.LinkedHashMap;
 import java.util.Scanner;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import org.jsoup.HttpStatusException;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Element;
+import Yak_Hax.Yak_Hax_Mimerme.Parse.ParseClient;
 
 public class Main {
+	static{
+		System.setProperty("http.proxyHost", "localhost");
+		System.setProperty("http.proxyPort", "8888");
+		System.setProperty("https.proxyHost", "localhost");
+		System.setProperty("https.proxyPort", "8888");
+
+	}
 
 	static final boolean PRELOAD_CONFIG = true;
 
 	static Scanner input = new Scanner(System.in);
 	//TODO: Convert all ArrayList Parameters to HashMaps
-	
+
 	//https://us-central-api.yikyakapi.net/api
 	//endpoint
 
-	public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
-/*		System.out.println(YikYakAPI.postYak(new TreeMap<String, String>()
+	public static void main(String[] args) throws IOException, NoSuchAlgorithmException, SignatureException {
+
+		YikYakAPI.registerNewUser();
+						/*		System.out.println(YikYakAPI.postYak(new TreeMap<String, String>()
 				{{
 					put("bypassedThreatPopup", "0");
 					put("userID", YikYakProfile.USER_ID);
@@ -41,9 +41,9 @@ public class Main {
 					put("version", YikYakAPI.YIKYAK_VERSION);
 					put("token", YikYakProfile.TOKEN);
 				}}).text());*/
-/*		System.out.println(YikYakAPI.startVerifyAccount(YikYakProfile.TOKEN, "(908) 444-6806", "USA", "+1"));
-*//*		System.out.println(YikYakAPI.verifyAccount(YikYakProfile.USER_ID, YikYakProfile.TOKEN,"833brjut2x1q3cecdmrqgkuz88", "5284"));
-*//*		YikYakAPI.verifyAccount(YikYakProfile.USER_ID, YikYakProfile.TOKEN, "(908) 444-6806");
+						/*		System.out.println(YikYakAPI.startVerifyAccount(YikYakProfile.TOKEN, "(908) 444-6806", "USA", "+1"));
+						 *//*		System.out.println(YikYakAPI.verifyAccount(YikYakProfile.USER_ID, YikYakProfile.TOKEN,"833brjut2x1q3cecdmrqgkuz88", "5284"));
+						 *//*		YikYakAPI.verifyAccount(YikYakProfile.USER_ID, YikYakProfile.TOKEN, "(908) 444-6806");
 		System.out.println("Util API debugger " + YikYakAPI.getAPIVersion());
 		System.out.println("This branch of the API requires the jUtilConsole, check the GitHub repository for more details");
 		if(PRELOAD_CONFIG){
@@ -77,7 +77,7 @@ public class Main {
 		parameters.add("-74.3561006");
 		parameters.add("R/556616c60b1cef81f019723059154");
 		parameters.add("R/556616c60b1cef81f019723059154");
-		
+
 		SortedMap<String, String> getparameters = new TreeMap<String, String>();
 		getparameters.put("accuracy", "48.0");
 		getparameters.put("bc", "0");
@@ -148,7 +148,7 @@ public class Main {
 			else{
 				System.out.println("Running \'Post Yak\' request build");
 				postParameters.clear();
-				
+
 				//Parse basecamp
 				System.out.println("Enter basecamp (default 0): ");
 				postParameters.put("bc", String.valueOf(input.nextInt()));
@@ -164,11 +164,11 @@ public class Main {
 				//Parse long
 				System.out.println("Enter long (recomended -74.3561006): ");
 				postParameters.put("long", input.next());
-				
+
 				//Parse message
 				System.out.println("Enter message (default\'I am bored\'): ");
 				postParameters.put("message", input.next());
-				
+
 				postParameters.put("token", YikYakProfile.TOKEN);
 				postParameters.put("userID", YikYakProfile.USER_ID);
 				postParameters.put("version", YikYakAPI.YIKYAK_VERSION);

@@ -28,10 +28,11 @@
 			<artifactId>jsoup</artifactId>
 			<version>1.8.2</version>
 		</dependency>
+
 		<dependency>
-			<groupId>com.github.thiagolocatelli</groupId>
-			<artifactId>parse4j</artifactId>
-			<version>1.4</version>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5</version>
 		</dependency>
 	</dependencies>
 </project>

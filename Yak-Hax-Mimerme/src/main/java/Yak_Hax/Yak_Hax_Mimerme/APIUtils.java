@@ -3,7 +3,9 @@ package Yak_Hax.Yak_Hax_Mimerme;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 public class APIUtils {
 	//Utilities to aid the YikYak API
@@ -67,9 +69,7 @@ public class APIUtils {
 	}
 	
 	public static String generateUUID(){
-		ArrayList<String> random = generateRandom(8);
-        return (random.get(0) + random.get(1) + "-" + random.get(2) + "-" + random.get(3) + "-" + random.get(4) + "-" 
-		+ random.get(5) + random.get(6) + random.get(7)).toUpperCase();
+		return UUID.randomUUID().toString();
 	}
 	public static String convertMD5(String message) throws NoSuchAlgorithmException{
 		MessageDigest md5Digest = MessageDigest.getInstance("MD5");
@@ -83,6 +83,19 @@ public class APIUtils {
         }
         return sb.toString().toUpperCase();
 	}
+	
+	public static String buildJSON(Map<String, String> json){
+		String temp = "{";
+		for(Map.Entry<String,String> entry : json.entrySet()) {
+			String key = entry.getKey();
+			String value = entry.getValue();
+
+			temp += "\"" + key + "\":" + value + ",";
+		}
+		temp = temp.substring(0, temp.length() - 1);
+		return temp + "}";
+	}
+	
 	public static String generateDeviceID() throws NoSuchAlgorithmException{
 		return convertMD5(generateUUID());
 	}

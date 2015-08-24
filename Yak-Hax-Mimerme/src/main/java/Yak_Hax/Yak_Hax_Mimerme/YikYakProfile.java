@@ -4,10 +4,10 @@ package Yak_Hax.Yak_Hax_Mimerme;
 //TODO: Don't make this a seperate class
 public class YikYakProfile {
 	//Enter your own token here
-	public static String TOKEN = "A688FF10D892D738BB6FEE1BAED280FD";
+	public static String TOKEN = "";
 	
 	//Enter your own userID here
-	public static String USER_ID = "7F904ECF9B88AEA289BD3651DA387C28";
+	public static String USER_ID = "";
 	
 	//Enter basecamp true - 1, or false - 0
 	public static String BASECAMP = "0";
@@ -25,6 +25,5 @@ public class YikYakProfile {
 	
 	//Yik-Yak's parse keys
 	public static String PARSE_APPLICAITON_KEY = "wMkdjBI4ircsNcRn8mXnBkgH0dwOcrkexrdMY3vY";
-	public static String PARSE_CLIENT_KEY = "GbNFwvFgoUu1wYuwIexNImy8bnSlNhqssG7gd53Y";
 	public static String PARSE_ID = "Generic Placeholder";
 }

@@ -4,20 +4,22 @@ import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
+import java.security.SignatureException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
-import org.parse4j.Parse;
-import org.parse4j.ParseException;
-import org.parse4j.ParseObject;
 
 import Yak_Hax.Yak_Hax_Mimerme.Exceptions.AuthorizationErrorException;
+import Yak_Hax.Yak_Hax_Mimerme.Parse.ParseClient;
 
 public class YikYakAPI {
 	//TODO: Unify a better basecamp method, and remove it from the argument requirements
@@ -27,16 +29,12 @@ public class YikYakAPI {
 
 	//TODO: API still needs testing to confirm all methods work successfully
 
+	static String YIKYAK_VERSION = "2.8.2";
+	
 	static final String BASE_URL = "https://us-central-api.yikyakapi.net";
 	static final String BASE_ENCODER_URL = "https://yakhax-encoder.herokuapp.com/?message=";
-
-	static String YIKYAK_VERSION = "2.8.2";
-	static String PARSE_VERSION = "1.7.1";
-	static String PARSE_PACKAGE_BUILD = "63";
-	static String PARSE_ENDPOINT = "https://api.parse.com/2/";
 	
 	static final String API_VERSION = "0.9.8.7a";
-	static final String USER_AGENT = "Parse Android SDK " + YikYakAPI.PARSE_VERSION + "(com.yik.yak/" + YikYakAPI.PARSE_PACKAGE_BUILD + ") API Level 19";
 
 	public static String getAPIVersion(){
 		return API_VERSION;
@@ -277,7 +275,7 @@ public class YikYakAPI {
 		return makeRequest(parseGetQuery("hot", parameters));
 	}
 
-	public static String[] registerNewUser() throws NoSuchAlgorithmException, ParseException{
+	public static String[] registerNewUser() throws NoSuchAlgorithmException, IOException, SignatureException{
 
 		final String deviceID = APIUtils.generateDeviceID();
 		final String userID = APIUtils.generateDeviceID();
@@ -316,27 +314,43 @@ public class YikYakAPI {
 			return null;
 		}
 		System.out.println(result);
-		System.out.println("User Registered on Yik Yak Servers");
 		
-		System.out.println("Registering UserID on Parse servers");
 		YikYakAPI.createInstallation();
 		return new String[]{
 				userID,token,deviceID,userAgent + " " + YikYakAPI.getYikYakVersion()
 		};
 	}
 	
-	private static void createInstallation() throws ParseException{
-		YikYakProfile.PARSE_ID = YikYakProfile.USER_ID.toLowerCase();
-		Parse.initialize(YikYakProfile.PARSE_CLIENT_KEY, YikYakProfile.PARSE_APPLICAITON_KEY);
-		ParseObject yikyak = new ParseObject("create");
-		yikyak.put("appIdentifier", "com.yik.yak");
-		yikyak.put("appName", "Yik Yak");
-		yikyak.put("appVersion", YikYakAPI.YIKYAK_VERSION);
-		yikyak.put("deviceType", "android");
-		yikyak.put("installationId", YikYakProfile.PARSE_ID);
-		yikyak.put("parseVersion", YikYakAPI.PARSE_VERSION);
-		yikyak.put("timeZone", "America/New_York");
-		yikyak.save();
+	private static void createInstallation() throws IOException, SignatureException{
+		ParseClient client = new ParseClient();
+
+		LinkedHashMap<String, String> jsonData = new LinkedHashMap<String, String>()
+				{{
+					put("appIdentifier", "\"com.yik.yak\"");
+					put("installationId", "\"" + YikYakProfile.PARSE_ID + "\"");
+					put("parseVersion", "\"" + ParseClient.PARSE_VERSION + "\"");
+					put("appVersion", "\"" + YikYakAPI.getYikYakVersion() + "\"");
+					put("appName", "\"Yik Yak\"");
+					put("timeZone", "\"America/New_York\"");
+					put("deviceType", "\"android\"");
+				}};	
+				
+				Pattern p = Pattern.compile("\"objectId\":\"([^\"]*)\"");
+				final Matcher m = p.matcher(client.saveObject(jsonData, "create"));
+				m.find();
+				
+		final LinkedHashMap<String, String> updateSubData = new LinkedHashMap<String, String>()
+				{{
+					put("__op", "\"AddUnique\"");
+					put("objects", "[\"c" + YikYakProfile.USER_ID + "c\"]");
+				}};	
+
+		LinkedHashMap<String, String> updateData = new LinkedHashMap<String, String>()
+				{{
+					put("channels", APIUtils.buildJSON(updateSubData));
+					put("objectId", "\"" + m.group(1) + "\"");
+				}};	
+				System.out.println(client.saveObject(updateData, "update"));
 	}
 
 	private static String parseGetQuery(String requestType, SortedMap<String, String> parameters){
