@@ -1,5 +1,6 @@
 package Yak_Hax.Yak_Hax_Mimerme.Exceptions;
 
+//Thrown on a SocketTimeout when the Heroku server has been inactive for a period of time
 public class SleepyServerException extends Exception{
 	public SleepyServerException(){
 		

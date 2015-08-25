@@ -8,19 +8,22 @@ import java.util.Random;
 import java.util.UUID;
 
 public class APIUtils {
-	//Utilities to aid the YikYak API
+	//Utilities to aid the YikYak API including calculations
 
 	private static Random rand = new Random();
 
 	//Ported from soren121's repository
 	//https://github.com/soren121/yodel/blob/64a42feff48ffa66c88b1645f68f69ccda12a422/Yodel/js/yak_api.js
+	//Composes a user Agent with the proper format
 	public static String generateRandomUserAgent() {
 
+		//The base String for the User Agent by stating some user data
 		String[] base = new String[3];
 		base[0] = "Dalvik/1.6.0 (Linux; U; Android 4.4.4; ";
 		base[1] = " Build/";
 		base[2] = ")";
 
+		//A list of possible devices
 		String[] devices = {
 				"Nexus 4",
 				"Nexus 5",
@@ -47,6 +50,7 @@ public class APIUtils {
 		return userAgent;
 	}
 
+	//Generates a random set of integers to create a buildID
 	public static ArrayList<String> generateRandom(int num){
 		int[] buf = new int [8];
 		for(int i = 0; i < buf.length; i++){
@@ -68,9 +72,12 @@ public class APIUtils {
 		return arr;
 	}
 	
+	//Generates a UUID based on the default Java library
 	public static String generateUUID(){
 		return UUID.randomUUID().toString();
 	}
+	
+	//Converts a message to an MD5
 	public static String convertMD5(String message) throws NoSuchAlgorithmException{
 		MessageDigest md5Digest = MessageDigest.getInstance("MD5");
 		md5Digest.update(message.getBytes());
@@ -84,8 +91,11 @@ public class APIUtils {
         return sb.toString().toUpperCase();
 	}
 	
+	//Builds a JSON from a Map (TreeMap, HashMap, LinkedHashMap, etc.)
 	public static String buildJSON(Map<String, String> json){
 		String temp = "{";
+		
+		//Iterate 
 		for(Map.Entry<String,String> entry : json.entrySet()) {
 			String key = entry.getKey();
 			String value = entry.getValue();
@@ -96,6 +106,7 @@ public class APIUtils {
 		return temp + "}";
 	}
 	
+	//Generates a device ID by converting a UUID to a MD5 hash
 	public static String generateDeviceID() throws NoSuchAlgorithmException{
 		return convertMD5(generateUUID());
 	}

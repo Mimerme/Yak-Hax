@@ -21,9 +21,6 @@ import Yak_Hax.Yak_Hax_Mimerme.PostRequest;
 import Yak_Hax.Yak_Hax_Mimerme.YikYakAPI;
 import Yak_Hax.Yak_Hax_Mimerme.YikYakProfile;
 
-//To Test
-//Test JSONBUILDER
-
 public class ParseClient {
 
 	static final String BASE_ENCODER_URL = "https://yakhax-encoder.herokuapp.com/parse?message=";
@@ -41,14 +38,18 @@ public class ParseClient {
 
 	}
 
+	//Generate a 20 digit random number
+	//Actually a bit more difficult than you think
 	private String generateNonce() { 
 		return String.valueOf(((long)(Math.random()*10000000000L)) + ((long)(Math.random()*10000000000L)) * 10000000000L);
 	}
 
+	//Save the object with the Parse server
 	public String saveObject(final Map<String, String> params, String target) throws IOException, SignatureException{
 		
 		String paramString = "";
 
+		//OAuth data to make the server happy
 		LinkedHashMap<String, String> oAuthData = new LinkedHashMap<String, String>()
 				{{
 					put("oauth_consumer_key", YikYakProfile.PARSE_APPLICAITON_KEY);
@@ -69,8 +70,7 @@ public class ParseClient {
 
 				paramString = paramString.substring(0, paramString.length() - 1);
 
-				System.out.println("POST&" + URLEncoder.encode(PARSE_ENDPOINT + target) + "&" + URLEncoder.encode(paramString));
-
+				//Generate the signature
 				String oAuthSig = generateSignature("POST&" + URLEncoder.encode(PARSE_ENDPOINT + target) + "&" + URLEncoder.encode(paramString));
 				oAuthData.put("oauth_signature", oAuthSig);
 

@@ -28,8 +28,6 @@ public class Main {
 	//endpoint
 
 	public static void main(String[] args) throws IOException, NoSuchAlgorithmException, SignatureException {
-
-		YikYakAPI.registerNewUser();
 						/*		System.out.println(YikYakAPI.postYak(new TreeMap<String, String>()
 				{{
 					put("bypassedThreatPopup", "0");
