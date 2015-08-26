@@ -5,9 +5,12 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
 import java.util.LinkedHashMap;
 import java.util.Scanner;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import Yak_Hax.Yak_Hax_Mimerme.Exceptions.RequestException;
+import Yak_Hax.Yak_Hax_Mimerme.Exceptions.SleepyServerException;
 import Yak_Hax.Yak_Hax_Mimerme.Parse.ParseClient;
 
 public class Main {
@@ -27,8 +30,8 @@ public class Main {
 	//https://us-central-api.yikyakapi.net/api
 	//endpoint
 
-	public static void main(String[] args) throws IOException, NoSuchAlgorithmException, SignatureException {
-						/*		System.out.println(YikYakAPI.postYak(new TreeMap<String, String>()
+	public static void main(String[] args) throws IOException, NoSuchAlgorithmException, SignatureException, SleepyServerException, RequestException {
+			System.out.println(YikYakAPI.postYak(new TreeMap<String, String>()
 				{{
 					put("bypassedThreatPopup", "0");
 					put("userID", YikYakProfile.USER_ID);
@@ -38,7 +41,7 @@ public class Main {
 					put("bc", YikYakProfile.BASECAMP);
 					put("version", YikYakAPI.YIKYAK_VERSION);
 					put("token", YikYakProfile.TOKEN);
-				}}).text());*/
+				}}).text());
 						/*		System.out.println(YikYakAPI.startVerifyAccount(YikYakProfile.TOKEN, "(908) 444-6806", "USA", "+1"));
 						 *//*		System.out.println(YikYakAPI.verifyAccount(YikYakProfile.USER_ID, YikYakProfile.TOKEN,"833brjut2x1q3cecdmrqgkuz88", "5284"));
 						 *//*		YikYakAPI.verifyAccount(YikYakProfile.USER_ID, YikYakProfile.TOKEN, "(908) 444-6806");

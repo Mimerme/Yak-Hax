@@ -3,15 +3,15 @@ package Yak_Hax.Yak_Hax_Mimerme;
 //Contains all set and preset values
 public class YikYakProfile {
 	//Enter your own token here
-	public static String TOKEN = "";
+	public static String TOKEN = "A76C673BCD4D6B36137C2EF7137F364D";
 
 	//Enter your own userID here
-	public static String USER_ID = "";
+	public static String USER_ID = "61B6DBB76A104945D4618F67354B1D6C";
 
 	//Enter basecamp true - 1, or false - 0
 	public static String BASECAMP = "0";
 
-	public static String USER_AGENT = "Dalvik/1.6.0 (Linux; U; Android 4.4.4; Nexus 4 Build/42436) 2.8.2";
+	public static String USER_AGENT = "Dalvik/1.6.0 (Linux; U; Android 4.4.4; Nexus 4 Build/42436) 2.9.2";
 
 	//Set lat and long
 	public static String LAT = "40.5647994";
