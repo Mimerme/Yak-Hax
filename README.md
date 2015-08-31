@@ -64,25 +64,24 @@ YikYakAPI.postRequest(parameters)
 
 ### Values and parameters
 There are a lot of parameters that Yik Yak uses when making their requests. Here are a few, they will be needed to make a Map of all the parameters. If it is a GET request the parameters are all in the query stirng. If it is a POST request some parameters are in the query string, while many are in the form data. Check the documentation to see which methods need what parameters.
-Bolded means used/needed
 
-*bc - not needed, baescamp true/false, retrieved from YikYakProfile.java
-*bypassedThreatPopup - needed 0 or 1
-
-*userID - not needed in the method parameters and retrieved from YikYakProfile.java
-*deviceID - used when registering a new user, not really needed
-*userID - not needed in the method parameters and retrieved from YikYakProfile.java
-*lat - latitude, needed in parameters
-*long - longitude, needed in parameters
-*userLat - latitude, same as lat, not needed
-*userLong - longitude, same as long, not needed
-*accuracy - accuracy of the request, can be faked, needed
-*altitude - altitude of the request, can be faked, needed
-*comment - comment string, needed
-*messageID - message id, needed, can be parsed from JSON
-*reason - reason for reporting, needed
-*commentID - comment id, needed, parsed from JSON
-*message - message, needed
+- bc - needed, baescamp true/false, retrieved from YikYakProfile.java
+- bypassedThreatPopup - needed 0 or 1
+- userID - needed, get it from YikYakProfile.java
+- deviceID - _used when registering a new user, not really needed_
+- token - needed, get it from YikYakProfile.java
+- version - needed get it from YikYakAPI.getYikYakVersion()
+- lat - latitude, needed in parameters
+- long - longitude, needed in parameters
+- userLat - latitude, same as lat, needed
+- userLong - longitude, same as long, needed
+- accuracy - accuracy of the request, can be faked, needed
+- altitude - altitude of the request, can be faked, needed
+- comment - comment string, needed
+- messageID - message id, needed, can be parsed from JSON
+- reason - reason for reporting, needed
+- commentID - comment id, needed, parsed from JSON
+- message - message, needed
 
 ## License
 Yak Hax uses the MIT License
