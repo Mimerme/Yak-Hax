@@ -25,4 +25,16 @@ Here is a list of features from Yak Hax. Several features are not implemeneted a
 | Downvote Comment         | GET          | downvoteComment                        |
 | Report Comment           | GET          | reportComment                          |
 | Start and Verify Account | POST         | multiple functions check documentation |
-| Register New User        | POST         |                                        |
+| Register New User        | POST         | check documentation                    |
+
+## License
+Yak Hax uses the MIT License
+
+## Documentation
+All Yak Hax documentaiton is within the Github wiki
+
+## Contributing
+Clone the repository and import the project as a Maven project. Tools recomended include Bluestacks (to emualte the Android device), Charles (to capture requests from an Android device), and Fiddler (to debug the library and capture requests from Bluestacks). Contact me for information to give youself a head start.
+
+## Credit
+Yak Hax uses Maven. Many thanks to Soren21 for his repository as well as others from the Yik Yak hacking community. Do not use this library maliciously. All requests are monitered.
