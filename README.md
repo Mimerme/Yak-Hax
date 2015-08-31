@@ -7,20 +7,22 @@ Yak Hax has no Maven repository. In order to download the library you can clone 
 ## What can YakHax do?
 Here is a list of features from Yak Hax. Several features are not implemeneted and if propery reverse engineered can be implemented through getRequest and postRequest
 
-| Feature            | Request Type | Method Name        |
-|--------------------|--------------|--------------------|
-| Get Yaks           | GET          | getYaks            |
-| Get Area Top       | GET          | getAreaTop         |
-| Get My Recent Yak  | GET          | getMyRecentYaks    |
-| Get My Tops        | GET          | getMyTops          |
-| Get Recent Replies | GET          | getMyRecentReplies |
-| Post Yak           | POST         | postYak            |
-| Delete Yak         | GET          | deleteYak          |
-| Upvote Yak         | GET          | upvoteYak          |
-| Downvote Yak       | GET          | downvoteYak        |
-| Get Yak Comments   | GET          | getYakComments     |
-| Post Comment       | POST         | postComment        |
-| Delete Comment     | GET          | downvoteComment    |
-| Upvote Comment     | GET          | upvoteComment      |
-| Downvote Comment   | GET          | downvoteComment    |
-| Report Comment     | GET          | reportComment      |
+| Feature                  | Request Type | Method Name                            |
+|--------------------------|--------------|----------------------------------------|
+| Get Yaks                 | GET          | getYaks                                |
+| Get Area Top             | GET          | getAreaTop                             |
+| Get My Recent Yak        | GET          | getMyRecentYaks                        |
+| Get My Tops              | GET          | getMyTops                              |
+| Get Recent Replies       | GET          | getMyRecentReplies                     |
+| Post Yak                 | POST         | postYak                                |
+| Delete Yak               | GET          | deleteYak                              |
+| Upvote Yak               | GET          | upvoteYak                              |
+| Downvote Yak             | GET          | downvoteYak                            |
+| Get Yak Comments         | GET          | getYakComments                         |
+| Post Comment             | POST         | postComment                            |
+| Delete Comment           | GET          | downvoteComment                        |
+| Upvote Comment           | GET          | upvoteComment                          |
+| Downvote Comment         | GET          | downvoteComment                        |
+| Report Comment           | GET          | reportComment                          |
+| Start and Verify Account | POST         | multiple functions check documentation |
+| Register New User        | POST         |                                        |
