@@ -28,24 +28,24 @@ Here is a list of features from Yak Hax. Several features are not implemeneted a
 | Register New User        | POST         | check documentation                    |
 
 ## How to use the library
-# Logging in
+### Logging in
 Must be called first before any requests are made
 ```java
 YikYakAPI.login(userID, token, userAgent)
 ```
 
-# Get Yaks
+### Get Yaks
 ```java
 YikYakAPI.getYaks(SortedMapParameters)
 ```
 
-# Keeping up-to-date
+### Keeping up-to-date
 Because Yik YaK's protocol does not change much across updates changing the Yik Yak version is often enough to make the cut
 ```java
 YikYakAPI.setYikYakVersion(version)
 ```
 
-# Register a new random user
+### Register a new random user
 Returns an array with 4 values in this specific order
 * userid
 * token
@@ -55,7 +55,7 @@ Returns an array with 4 values in this specific order
 YikYakAPI.registerNewUser()
 ```
 
-# Generic requests
+### Generic requests
 If you have enough data on the GET and POST requests of the Yik Yak API not implemented already you can call these two methods
 ```java
 YikYakAPI.getRequest(parameters)
