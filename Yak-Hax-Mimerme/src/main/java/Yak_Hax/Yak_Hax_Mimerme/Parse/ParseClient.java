@@ -1,3 +1,25 @@
+/*The MIT License (MIT)
+
+Copyright (c) 2015 Andros Yang
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.*/
+
 package Yak_Hax.Yak_Hax_Mimerme.Parse;
 
 import java.io.IOException;
@@ -20,6 +42,7 @@ import Yak_Hax.Yak_Hax_Mimerme.APIUtils;
 import Yak_Hax.Yak_Hax_Mimerme.PostRequest;
 import Yak_Hax.Yak_Hax_Mimerme.YikYakAPI;
 import Yak_Hax.Yak_Hax_Mimerme.YikYakProfile;
+import Yak_Hax.Yak_Hax_Mimerme.Exceptions.SleepyServerException;
 
 public class ParseClient {
 
@@ -45,7 +68,7 @@ public class ParseClient {
 	}
 
 	//Save the object with the Parse server
-	public String saveObject(final Map<String, String> params, String target) throws IOException, SignatureException{
+	public String saveObject(final Map<String, String> params, String target) throws IOException, SignatureException, SleepyServerException{
 		
 		String paramString = "";
 
@@ -108,17 +131,14 @@ public class ParseClient {
 	}
 
 	//Generates the signature via the server
-	private static String generateSignature(String message){
-		System.out.println("Getting the HASH value of " + message);
+	private static String generateSignature(String message) throws SleepyServerException{
 		try {
 			String hash = Jsoup.connect(BASE_ENCODER_URL + URLEncoder.encode(message)).get()
 					.text();
 			return hash;
 		}
 		catch(SocketTimeoutException e){
-			System.out.println("There was a SocketTimeoutException, wait for the HASH server "
-					+ "to wake up");
-			return "SocketTimeout";
+			throw new SleepyServerException("There was a SocketTimeout wait for the HASH server to wake up");
 		}
 		catch (IOException e) {
 			// TODO Auto-generated catch block

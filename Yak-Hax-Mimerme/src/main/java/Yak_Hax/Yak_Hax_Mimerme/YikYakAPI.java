@@ -1,3 +1,26 @@
+/*The MIT License (MIT)
+
+Copyright (c) 2015 Andros Yang
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
 package Yak_Hax.Yak_Hax_Mimerme;
 
 import java.io.IOException;
@@ -37,12 +60,6 @@ public class YikYakAPI {
 	//HASH server
 	static final String BASE_ENCODER_URL = "https://yakhax-encoder.herokuapp.com/?message=";
 
-	static final String API_VERSION = "0.9.8.7a";
-
-	public static String getAPIVersion(){
-		return API_VERSION;
-	}
-
 	//Should only be called for compatibility purposes
 	public static void setYikYakVersion(String version){
 		YIKYAK_VERSION = version;
@@ -58,7 +75,7 @@ public class YikYakAPI {
 		YikYakProfile.USER_AGENT = userAgent;
 		return true;
 	}
-
+ 
 	//Gets all local Yaks
 	public static Element getYaks(SortedMap<String, String> parameters) throws IOException, SleepyServerException, RequestException{
 		return makeRequest(parseGetQuery("getMessages", parameters));
@@ -69,212 +86,43 @@ public class YikYakAPI {
 		return makeRequest(parseGetQuery("getComments", parameters));
 	}
 
-	public static Element upvoteComment(ArrayList<String> parameters) throws IOException, SleepyServerException, RequestException{
-		String request, hashMessage;
-
-		request = BASE_URL;
-		hashMessage = "/api/";
-
-		hashMessage += "downvoteComment?";
-
-		hashMessage += "accuracy=" + parameters.get(0)
-				+ "&bc=" + parameters.get(1) + "&lat=" + parameters.get(2)
-				+ "&commentID=" + parameters.get(4) + "&token=" + YikYakProfile.TOKEN
-				+ "&userID=" + YikYakProfile.USER_ID + "&userLat=" + parameters.get(2)
-				+ "&userLong=" + parameters.get(3) + "&version=" + YIKYAK_VERSION;
-
-		String salt = getSalt();
-		String hashValue = getHash(hashMessage + salt);
-
-		request += hashMessage + "&salt=" + salt + "&hash=" + hashValue;
-
-		return makeRequest(request);
+	public static Element upvoteComment(SortedMap<String, String> parameters) throws IOException, SleepyServerException, RequestException{
+		return makeRequest(parseGetQuery("likeComment", parameters));
 	}
 
-	/*public static Element deleteComment(ArrayList<String> parameters) throws IOException, SleepyServerException, RequestException{
-		String request, hashMessage;
-
-		request = BASE_URL;
-		hashMessage = "/api/";
-
-		hashMessage += "deleteComment?";
-
-		hashMessage += "accuracy=" + parameters.get(0)
-				+ "&bc=" + parameters.get(1) + "&lat=" + parameters.get(2)
-				+ "&commentID=" + parameters.get(4) + "&token=" + YikYakProfile.TOKEN
-				+ "&userID=" + YikYakProfile.USER_ID + "&userLat=" + parameters.get(2)
-				+ "&userLong=" + parameters.get(3) + "&version=" + YIKYAK_VERSION;
-
-		String salt = getSalt();
-		String hashValue = getHash(hashMessage + salt);
-
-		request += hashMessage + "&salt=" + salt + "&hash=" + hashValue;
-
-		return makeRequest(request);
+	public static Element deleteComment(SortedMap<String, String> parameters) throws IOException, SleepyServerException, RequestException{
+		return makeRequest(parseGetQuery("deleteComment", parameters));
 	}
 
-	public static Element downvoteComment(ArrayList<String> parameters) throws IOException, SleepyServerException, RequestException{
-		String request, hashMessage;
-
-		request = BASE_URL;
-		hashMessage = "/api/";
-
-		hashMessage += "likeComment?";
-
-		hashMessage += "accuracy=" + parameters.get(0)
-				+ "&bc=" + parameters.get(1) + "&lat=" + parameters.get(2)
-				+ "&commentID=" + parameters.get(4) + "&token=" + YikYakProfile.TOKEN
-				+ "&userID=" + YikYakProfile.USER_ID + "&userLat=" + parameters.get(2)
-				+ "&userLong=" + parameters.get(3) + "&version=" + YIKYAK_VERSION;
-
-		String salt = getSalt();
-		String hashValue = getHash(hashMessage + salt);
-
-		request += hashMessage + "&salt=" + salt + "&hash=" + hashValue;
-
-		return makeRequest(request);
+	public static Element downvoteComment(SortedMap<String, String> parameters) throws IOException, SleepyServerException, RequestException{
+		return makeRequest(parseGetQuery("downvoteComment", parameters));
 	}
 
-	public static Element reportComment(ArrayList<String> parameters) throws IOException, SleepyServerException, RequestException{
-		String request, hashMessage;
-
-		request = BASE_URL;
-		hashMessage = "/api/";
-
-		hashMessage += "likeComment?";
-
-		hashMessage += "accuracy=" + parameters.get(0)
-				+ "&bc=" + parameters.get(1) + "&lat=" + parameters.get(2)
-				+ "&commentID=" + parameters.get(4) 
-				+ "&messageID" + parameters.get(5) + "&token=" + YikYakProfile.TOKEN
-				+ "&userID=" + YikYakProfile.USER_ID + "&userLat=" + parameters.get(2)
-				+ "&userLong=" + parameters.get(3) + "&version=" + YIKYAK_VERSION;
-
-		String salt = getSalt();
-		String hashValue = getHash(hashMessage + salt);
-
-		request += hashMessage + "&salt=" + salt + "&hash=" + hashValue;
-
-		return makeRequest(request);
+	public static Element reportComment(SortedMap<String, String> parameters) throws IOException, SleepyServerException, RequestException{
+		return makeRequest(parseGetQuery("reportMessage", parameters));
 	}
 
-	public static Element upvoteYak(ArrayList<String> parameters) throws IOException, SleepyServerException, RequestException{
-		String request, hashMessage;
-
-		request = BASE_URL;
-		hashMessage = "/api/";
-
-		hashMessage += "likeMessage?";
-
-		hashMessage += "accuracy=" + parameters.get(0)
-				+ "&bc=" + parameters.get(1) + "&lat=" + parameters.get(2)
-				+ "&messageID=" + parameters.get(4) + "&token=" + YikYakProfile.TOKEN
-				+ "&userID=" + YikYakProfile.USER_ID + "&userLat=" + parameters.get(2)
-				+ "&userLong=" + parameters.get(3) + "&version=" + YIKYAK_VERSION;
-
-		String salt = getSalt();
-		String hashValue = getHash(hashMessage + salt);
-
-		request += hashMessage + "&salt=" + salt + "&hash=" + hashValue;
-
-		return makeRequest(request);
+	public static Element upvoteYak(SortedMap<String, String> parameters) throws IOException, SleepyServerException, RequestException{
+		return makeRequest(parseGetQuery("likeMessage", parameters));
+	}
+	
+	public static Element reportYak(SortedMap<String, String> parameters) throws IOException, SleepyServerException, RequestException{
+		return makeRequest(parseGetQuery("reportMessage", parameters));
 	}
 
-	public static Element reportYak(ArrayList<String> parameters) throws IOException, SleepyServerException, RequestException{
-		String request, hashMessage;
-
-		request = BASE_URL;
-		hashMessage = "/api/";
-
-		hashMessage += "reportMessage?";
-
-		hashMessage += "accuracy=" + parameters.get(0)
-				+ "&bc=" + parameters.get(1) + "&lat=" + parameters.get(2)
-				+ "&messageID=" + parameters.get(4) + "&token=" + YikYakProfile.TOKEN
-				+ "&userID=" + YikYakProfile.USER_ID + "&userLat=" + parameters.get(2)
-				+ "&userLong=" + parameters.get(3) + "&version=" + YIKYAK_VERSION;
-
-		String salt = getSalt();
-		String hashValue = getHash(hashMessage + salt);
-
-		request += hashMessage + "&salt=" + salt + "&hash=" + hashValue;
-
-		return makeRequest(request);
+	public static Element downvoteYak(SortedMap<String, String> parameters) throws IOException, SleepyServerException, RequestException{
+		return makeRequest(parseGetQuery("downvoteMessage", parameters));
 	}
 
 	//Posts a comment
-	//TODO: Fix POST code
-	public static Element postComment(ArrayList<String> parameters, SortedMap<String, String> formParameters) throws IOException, SleepyServerException, RequestException{
-		String request, hashMessage;
-
-		request = BASE_URL;
-		hashMessage = "/api/";
-
-		hashMessage += "downvoteMessage?";
-
-		hashMessage += "accuracy=" + parameters.get(0)
-				+ "&bc=" + parameters.get(1)
-				+ "&messageID=" + parameters.get(4) + "&token=" + YikYakProfile.TOKEN
-				+ "&userID=" + YikYakProfile.USER_ID + "&userLat=" + parameters.get(2)
-				+ "&userLong=" + parameters.get(3) + "&version=" + YIKYAK_VERSION;
-
-		String salt = getSalt();
-		String hashValue = getHash(hashMessage + salt);
-
-		request += hashMessage + "&salt=" + salt + "&hash=" + hashValue;
-		formParameters.put("salt", salt);
-		formParameters.put("hash", hashValue);
-		formParameters.put("accuracy", parameters.get(0));
-
-
-		return makePostRequest(request, formParameters);
-	}
-
-	//Downvotes a yak
-	public static Element downvoteYak(ArrayList<String> parameters) throws IOException, SleepyServerException, RequestException{
-		String request, hashMessage;
-
-		request = BASE_URL;
-		hashMessage = "/api/";
-
-		hashMessage += "downvoteMessage?";
-
-		hashMessage += "accuracy=" + parameters.get(0)
-				+ "&bc=" + parameters.get(1) + "&lat=" + parameters.get(2)
-				+ "&messageID=" + parameters.get(4) + "&token=" + YikYakProfile.TOKEN
-				+ "&userID=" + YikYakProfile.USER_ID + "&userLat=" + parameters.get(2)
-				+ "&userLong=" + parameters.get(3) + "&version=" + YIKYAK_VERSION;
-
-		String salt = getSalt();
-		String hashValue = getHash(hashMessage + salt);
-
-		request += hashMessage + "&salt=" + salt + "&hash=" + hashValue;
-
-		return makeRequest(request);
+	public static Element postComment(SortedMap<String, String> queryparameters, SortedMap<String, String> parameters) throws IOException, SleepyServerException, RequestException{
+		return makePostRequest(parsePostQuery("postComment", queryparameters, parameters), parameters);
 	}
 
 	//Deletes one of your yaks
-	public static Element deleteYak(ArrayList<String> parameters) throws IOException, SleepyServerException, RequestException{
-		String request, hashMessage;
-
-		request = BASE_URL;
-		hashMessage = "/api/";
-
-		hashMessage += "deleteMessage2?";
-
-		hashMessage += "accuracy=" + parameters.get(0)
-				+ "&bc=" + parameters.get(1) + "&lat=" + parameters.get(2)
-				+ "&messageID=" + parameters.get(4) + "&token=" + YikYakProfile.TOKEN
-				+ "&userID=" + YikYakProfile.USER_ID + "&userLat=" + parameters.get(2)
-				+ "&userLong=" + parameters.get(3) + "&version=" + YIKYAK_VERSION;
-
-		String salt = getSalt();
-		String hashValue = getHash(hashMessage + salt);
-
-		request += hashMessage + "&salt=" + salt + "&hash=" + hashValue;
-
-		return makeRequest(request);
-	}*/
+	public static Element deleteYak(SortedMap<String, String> parameters) throws IOException, SleepyServerException, RequestException{
+		return makeRequest(parseGetQuery("deleteMessage2", parameters));
+	}
 
 	//Loads an area's hot Yaks and its comments
 	public static Element getAreaHot(SortedMap<String, String> parameters) throws IOException, SleepyServerException, RequestException{
@@ -315,7 +163,7 @@ public class YikYakAPI {
 	}
 
 	//Creates a new user installation with the Parse server
-	private static void createInstallation() throws IOException, SignatureException{
+	private static void createInstallation() throws IOException, SignatureException, SleepyServerException{
 		ParseClient client = new ParseClient();
 
 		LinkedHashMap<String, String> jsonData = new LinkedHashMap<String, String>()
@@ -344,7 +192,6 @@ public class YikYakAPI {
 									put("channels", APIUtils.buildJSON(updateSubData));
 									put("objectId", "\"" + m.group(1) + "\"");
 								}};	
-								System.out.println(client.saveObject(updateData, "update"));
 	}
 
 	private static String parseGetQuery(String requestType, SortedMap<String, String> parameters) throws SleepyServerException{
@@ -366,15 +213,20 @@ public class YikYakAPI {
 		return request;
 	}
 
-	private static String parsePostQuery(String requestType, SortedMap<String, String> params) throws SleepyServerException{
+	private static String parsePostQuery(String requestType, SortedMap<String, String> queryParams, SortedMap<String, String> params) throws SleepyServerException{
 		String request, hashMessage;
 
 		request = BASE_URL;
-		hashMessage = "/api/";
-
-		hashMessage += "sendMessage?";
-
-		hashMessage += "bc=0&" + "token=" + YikYakProfile.TOKEN
+		
+		hashMessage = "/api/" + requestType + "?";
+		Iterator it = queryParams.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry pair = (Map.Entry)it.next();
+			hashMessage += pair.getKey() + "=" + pair.getValue() + "&";
+			it.remove();
+		}
+		
+		hashMessage += "token=" + YikYakProfile.TOKEN
 				+ "&userID=" + YikYakProfile.USER_ID + "&version=" + YikYakAPI.getYikYakVersion();
 
 		String salt = getSalt();
@@ -409,8 +261,8 @@ public class YikYakAPI {
 	}
 	
 	//Generic POST request for features not yet developed in the API
-	public static Element postRequest(String target, SortedMap<String, String> parameters) throws RequestException, SleepyServerException{
-		return makePostRequest(parsePostQuery(target, parameters), parameters);
+	public static Element postRequest(String target, SortedMap<String, String> queryparameters, SortedMap<String, String> parameters) throws RequestException, SleepyServerException{
+		return makePostRequest(parsePostQuery(target, queryparameters, parameters), parameters);
 	}
 
 	//This must be called first to get the verification token
@@ -450,8 +302,8 @@ public class YikYakAPI {
 	}
   
 	//Posts a yak
-	public static Element postYak(SortedMap<String, String> parameters) throws IOException, SleepyServerException, RequestException{
-		return makePostRequest(parsePostQuery("sendMessage", parameters), parameters);
+	public static Element postYak(SortedMap<String, String> queryparameters, SortedMap<String, String> parameters) throws IOException, SleepyServerException, RequestException{
+		return makePostRequest(parsePostQuery("sendMessage", queryparameters, parameters), parameters);
 	}
 
 	//Makes a get request to the YikYak API
@@ -485,7 +337,6 @@ public class YikYakAPI {
 
 	//Makes a post request
 	private static Element makePostRequest(String request, Map<String, String> formParameters) throws RequestException{
-		System.out.println(request);
 		try {
 			return Jsoup.connect(request)
 					.userAgent(YikYakProfile.USER_AGENT + "" + YikYakAPI.getYikYakVersion())
@@ -523,14 +374,13 @@ public class YikYakAPI {
 	//Get signed HASH value from the server
 	@SuppressWarnings("deprecation")
 	public static String getHash(String message) throws SleepyServerException{
-		System.out.println("Getting the HASH value of " + message);
 		try {
 			String hash = Jsoup.connect(BASE_ENCODER_URL + URLEncoder.encode(message)).get()
 					.text();
 			return hash;
 		} 
 		catch(SocketTimeoutException e){
-			throw(new SleepyServerException());
+			throw(new SleepyServerException("There was a SocketTimeout wait for the HASH server to wake up"));
 		}
 		catch (IOException e) {
 			// TODO Auto-generated catch block
